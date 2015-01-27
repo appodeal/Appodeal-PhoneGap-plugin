@@ -5,7 +5,7 @@ import org.apache.cordova.CordovaPlugin;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import com.appodeal.stats.Appodeal;
+import com.appodeal.ads.Appodeal;
 
 
 public class AppodealPlugin extends CordovaPlugin{
@@ -24,7 +24,7 @@ public class AppodealPlugin extends CordovaPlugin{
 			cordova.getActivity().runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-					Appodeal.initializeSDK(cordova.getActivity(), appKey);
+					Appodeal.initialize(cordova.getActivity(), appKey);
 				}
 			});
 			
