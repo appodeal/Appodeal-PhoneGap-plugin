@@ -13,7 +13,7 @@ public class AppodealPlugin extends CordovaPlugin{
 	
 	private static final String ACTION_INI_APPODEAL = "initialize";
 	private static final String ACTION_SHOW_BANNER = "showBanner";
-	private static final String ACTION_IS_LOADED = "showBanner";
+	private static final String ACTION_IS_LOADED = "isLoaded";
 	
 	@Override
 	public boolean execute(String action, JSONArray args, CallbackContext callback) throws JSONException{
