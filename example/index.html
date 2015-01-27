@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+       <title>Hello Appodeal</title>
+    </head>
+    <body>
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript" >
+        function initialize() { 
+		    Appodeal.initialize("fee50c333ff3825fd6ad6d38cff78154de3025546d47a84f"); 
+		}
+		function showBanner() { 
+		    Appodeal.showBanner(function(){},function(){}); 
+		} 
+		function isLoaded() { 
+		    Appodeal.isLoaded(function(){},function(){}); 
+		} 
+        </script>
+        
+        <button onclick="initialize();">Init</button>
+        <button onclick="showBanner();">Show</button>
+        <button onclick="isLoaded();">Show</button>
+    </body>
+</html>
+
