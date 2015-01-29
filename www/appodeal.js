@@ -8,10 +8,10 @@
 		exec(null, null, "AppodealPlugin", "initialize", [appKey]);
 	}
 
-	Appodeal.showBanner = function(sucessCallback, failCallback) {
-		exec(sucessCallback, failCallback, "AppodealPlugin", "showBanner", []);
+	Appodeal.showBanner = function() {
+		exec(null, null, "AppodealPlugin", "showBanner", []);
 	}
 	
 	Appodeal.isLoaded = function() {
-		exec(null, bull, "AppodealPlugin", "isLoaded", []);
+		exec(null, null, "AppodealPlugin", "isLoaded", []);
 	}

@@ -32,35 +32,40 @@
         </config-file>
 		
 		<config-file target="AndroidManifest.xml" parent="/manifest/application">
-			<activity android:name="com.appodeal.ads.AdActivity"
-				android:configChanges="orientation|screenSize"
-				android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+		  <activity android:name="com.appodeal.ads.AdActivity"
+			  android:configChanges="orientation|screenSize"
+			  android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+		  <activity android:name="com.appodeal.ads.LoaderActivity"
+			  android:configChanges="orientation|screenSize"
+			  android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
-			<meta-data android:name="com.google.android.gms.version" android:value="6587000" />
-			<activity android:name="com.google.android.gms.ads.AdActivity"
-				android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
-				android:theme="@android:style/Theme.Translucent" />
+		  <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
+		  <activity android:name="com.google.android.gms.ads.AdActivity"
+			  android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
+			  android:theme="@android:style/Theme.Translucent" />
 
-			<activity android:name="com.chartboost.sdk.CBImpressionActivity"
-				android:theme="@android:style/Theme.Translucent"
-				android:excludeFromRecents="true" />
+		  <activity android:name="com.chartboost.sdk.CBImpressionActivity"
+			  android:theme="@android:style/Theme.Translucent"
+			  android:excludeFromRecents="true" />
 
-			<meta-data android:name="applovin.sdk.key"
-				android:value="TA7nlRNu4oiZ7PWQ-ip1L4dWvS3ZNwkw5rhqG3hLrOvypQMo79pTER_7u3hF-PA3EstUvZrlykgm82TGCMlQok"/>
-			<activity android:name="com.applovin.adview.AppLovinInterstitialActivity" />
+		  <meta-data android:name="applovin.sdk.key"
+			  android:value="TA7nlRNu4oiZ7PWQ-ip1L4dWvS3ZNwkw5rhqG3hLrOvypQMo79pTER_7u3hF-PA3EstUvZrlykgm82TGCMlQok"/>
+		  <activity android:name="com.applovin.adview.AppLovinInterstitialActivity"
+			  android:theme="@android:style/Theme.Translucent" />
 
-			<activity android:name="com.mopub.mobileads.MoPubActivity"
-				android:configChanges="keyboardHidden|orientation|screenSize" />
-			<activity android:name="com.mopub.common.MoPubBrowser"
-				android:configChanges="keyboardHidden|orientation|screenSize" />
-			<activity android:name="com.mopub.mobileads.MraidActivity"
-				android:configChanges="keyboardHidden|orientation|screenSize" />
-			<activity android:name="com.mopub.mobileads.MraidVideoPlayerActivity"
-				android:configChanges="keyboardHidden|orientation|screenSize" />
+		  <activity android:name="com.mopub.mobileads.MoPubActivity"
+			  android:configChanges="keyboardHidden|orientation|screenSize"
+			  android:theme="@android:style/Theme.Translucent" />
+		  <activity android:name="com.mopub.common.MoPubBrowser"
+			  android:configChanges="keyboardHidden|orientation|screenSize" />
+		  <activity android:name="com.mopub.mobileads.MraidActivity"
+			  android:configChanges="keyboardHidden|orientation|screenSize" />
+		  <activity android:name="com.mopub.mobileads.MraidVideoPlayerActivity"
+			  android:configChanges="keyboardHidden|orientation|screenSize" />
 
-			<activity android:name="org.nexage.sourcekit.mraid.MRAIDBrowser"
-				android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
-				android:theme="@android:style/Theme.Translucent" />
+		  <activity android:name="org.nexage.sourcekit.mraid.MRAIDBrowser"
+			  android:configChanges="orientation|keyboard|keyboardHidden|screenSize"
+			  android:theme="@android:style/Theme.Translucent" />
         </config-file>
         
         <source-file src="src/android/AppodealPlugin.java" target-dir="src/com/appodeal/plugin" />
