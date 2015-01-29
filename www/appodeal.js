@@ -11,7 +11,3 @@
 	Appodeal.showBanner = function() {
 		exec(null, null, "AppodealPlugin", "showBanner", []);
 	}
-	
-	Appodeal.isLoaded = function() {
-		exec(null, null, "AppodealPlugin", "isLoaded", []);
-	}
