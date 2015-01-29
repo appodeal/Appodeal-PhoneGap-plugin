@@ -69,7 +69,7 @@
         </config-file>
         
         <source-file src="src/android/AppodealPlugin.java" target-dir="src/com/appodeal/plugin" />
-        <source-file src="libs/Appodeal.jar" target-dir="libs" />
+        <source-file src="libs/appodeal.jar" target-dir="libs" />
 		<source-file src="libs/applovin-sdk-5.4.2.jar" target-dir="libs" />
 		<source-file src="libs/chartboost-4.0.1.jar" target-dir="libs" />
 		<source-file src="libs/google-play-services.jar" target-dir="libs" />
