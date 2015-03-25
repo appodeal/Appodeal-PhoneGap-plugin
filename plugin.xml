@@ -81,8 +81,8 @@
         
         <source-file src="src/android/AppodealPlugin.java" target-dir="src/com/appodeal/plugin" />
         <source-file src="libs/appodeal.jar" target-dir="libs" />
-		<source-file src="libs/applovin-sdk-5.4.2.jar" target-dir="libs" />
-		<source-file src="libs/chartboost-5.1.0.jar" target-dir="libs" />
+		<source-file src="libs/applovin-sdk-5.4.3.jar" target-dir="libs" />
+		<source-file src="libs/chartboost-5.1.2.jar" target-dir="libs" />
 		<source-file src="libs/google-play-services.jar" target-dir="libs" />
 		<source-file src="libs/android-support-v4.jar" target-dir="libs" />
 		
