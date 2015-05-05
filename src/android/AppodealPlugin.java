@@ -218,12 +218,7 @@ public class AppodealPlugin extends CordovaPlugin {
 			new Handler(Looper.getMainLooper()).post(new Runnable() {
 			    @Override
 			    public void run() {
-					new Handler(Looper.getMainLooper()).post(new Runnable() {
-					    @Override
-					    public void run() {
-					    	webView.loadUrl ("javascript:cordova.fireDocumentEvent('onVideoLoaded');");
-					    }
-					});
+					webView.loadUrl ("javascript:cordova.fireDocumentEvent('onVideoLoaded');");
 			    }
 			});
 		}
