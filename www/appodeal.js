@@ -1,17 +1,13 @@
-
 	var Appodeal = exports;
 
 	var exec = require('cordova/exec');
 	var cordova = require('cordova');
 	
-	adType = {
-	  NONE: '0',
-	  INTERSTITIAL: '1',
-	  VIDEO: '2',
-	  ALL: '7',
-	  ANY: '7'
-	};
-
+	Appodeal.INTERSTITIAL = 1;
+	Appodeal.VIDEO = 2;
+	Appodeal.ANY = 7;
+	Appodeal.ALL = 7;
+	
 	Appodeal.initialize = function(appKey) {
 		exec(null, null, "AppodealPlugin", "initialize", [appKey]);
 	}

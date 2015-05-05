@@ -9,24 +9,25 @@
         <script type="text/javascript" >
         
         function initialize() { 
-        	Appodeal.setAutoCache(adType.ALL, false);
-		    Appodeal.initialize("d0d372258e42075f7d0a72029148dcba6c9d3d201a95d3cb", adType.ALL); 
+        	Appodeal.setAutoCache(Appodeal.ALL, false);
+        	var appKey = "d0d372258e42075f7d0a72029148dcba6c9d3d201a95d3cb";
+		    Appodeal.initialize(appKey, Appodeal.INTERSTITIAL | Appodeal.VIDEO); 
 		    Appodeal.enableInterstitialCallbacks(true);
 		    Appodeal.enableVideoCallbacks(true);
 		    
 		    registerAdEvents();
 		}
 		function show() { 
-		    Appodeal.show(adType.INTERSTITIAL);
+		    Appodeal.show(Appodeal.INTERSTITIAL);
 		} 
 		function cacheInterstitial() { 
-		    Appodeal.cache(adType.INTERSTITIAL);
+		    Appodeal.cache(Appodeal.INTERSTITIAL);
 		} 
 		function video() { 
-		    Appodeal.show(adType.VIDEO); 
+		    Appodeal.show(Appodeal.VIDEO); 
 		} 
 		function cacheVideo() { 
-		    Appodeal.cache(adType.VIDEO);
+		    Appodeal.cache(Appodeal.VIDEO);
 		} 
 		
 		function registerAdEvents() {
