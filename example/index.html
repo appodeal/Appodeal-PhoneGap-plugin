@@ -3,22 +3,52 @@
     <head>
        <title>Hello Appodeal</title>
     </head>
-    <body>
+    <body style="background-color:red;">
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
         <script type="text/javascript" >
+        
         function initialize() { 
-		    Appodeal.initialize("fee50c333ff3825fd6ad6d38cff78154de3025546d47a84f"); 
+        	Appodeal.setAutoCache(adType.ALL, false);
+		    Appodeal.initialize("d0d372258e42075f7d0a72029148dcba6c9d3d201a95d3cb", adType.ALL); 
+		    Appodeal.enableInterstitialCallbacks(true);
+		    Appodeal.enableVideoCallbacks(true);
+		    
+		    registerAdEvents();
 		}
-		function showBanner() { 
-		    Appodeal.showBanner(function(){},function(){}); 
+		function show() { 
+		    Appodeal.show(adType.INTERSTITIAL);
+		} 
+		function cacheInterstitial() { 
+		    Appodeal.cache(adType.INTERSTITIAL);
+		} 
+		function video() { 
+		    Appodeal.show(adType.VIDEO); 
+		} 
+		function cacheVideo() { 
+		    Appodeal.cache(adType.VIDEO);
 		} 
 		
+		function registerAdEvents() {
+		    document.addEventListener('onInterstitialShown', function(){});
+		    document.addEventListener('onInterstitialLoaded', function(){});
+		    document.addEventListener('onInterstitialFailedToLoad', function(){});
+		    document.addEventListener('onInterstitialClosed', function(){});
+		    document.addEventListener('onInterstitialClicked', function(){});
+		    document.addEventListener('onVideoClosed', function(){});
+		    document.addEventListener('onVideoFailedToLoad', function(){});
+		    document.addEventListener('onVideoFinished', function(){});
+		    document.addEventListener('onVideoLoaded', function(){});
+		    document.addEventListener('onVideoShown', function(){});
+		}
+		
         </script>
-        
-        <button onclick="initialize();">Init</button>
-        <button onclick="showBanner();">Show</button>
-        
+        <p style="font-size:25px;color:white;">Appodeal PhoneGap Plugin</p>
+        <button id="initialize" onclick="initialize();" style="width:100%;height:50px; margin-top:10px;background-color:white;color:red;">Initialize</button>
+        <button id="interstitial" onclick="show();" style="width:100%;height:50px; margin-top:10px;background-color:white;color:red;">Interstitial</button>
+        <button id="cacheInterstitial" onclick="cacheInterstitial();" style="width:100%;height:50px; margin-top:10px;background-color:white;color:red;">Cache Interstitial</button>
+        <button id="video" onclick="video();" style="width:100%;height:50px; margin-top:10px;background-color:white;color:red;">Video</button>
+        <button id="cacheVideo" onclick="cacheVideo();" style="width:100%;height:50px; margin-top:10px;background-color:white;color:red;">Cache Video</button>
     </body>
 </html>
 
