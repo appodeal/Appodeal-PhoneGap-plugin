@@ -1,4 +1,4 @@
-cordova.define("com.appodeal.plugin.AppodealPlugin", function(require, exports, module) { 
+
 	var Appodeal = exports;
 
 	var exec = require('cordova/exec');
@@ -51,5 +51,3 @@ cordova.define("com.appodeal.plugin.AppodealPlugin", function(require, exports, 
 	Appodeal.disableNetwork = function(network) {
 		exec(null, null, "AppodealPlugin", "disableNetwork", [network]);
 	}
-
-});
