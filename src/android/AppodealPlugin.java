@@ -18,6 +18,8 @@ public class AppodealPlugin extends CordovaPlugin {
 	private static final String ACTION_INIT_APPODEAL_AD_TYPE = "initializeAdType";
 	private static final String ACTION_SET_INTERSTITIAL_CALLBACKS = "enableIntertitialCallbacks";
 	private static final String ACTION_SET_VIDEO_CALLBACKS = "enableVideoCallbacks";
+	private static final String ACTION_ISLOADED = "isLoaded";
+	private static final String ACTION_ISPRECACHE = "isPrecache";
 	private static final String ACTION_SHOW = "show";
 	private static final String ACTION_SHOW_WITH_PRICE_FLOOR = "showWithPriceFloor";
 	private static final String ACTION_SET_AUTO_CACHE = "setAutoCache";
@@ -34,7 +36,7 @@ public class AppodealPlugin extends CordovaPlugin {
 
 	@Override
 	public boolean execute(String action, JSONArray args,
-			CallbackContext callback) throws JSONException {
+			final CallbackContext callback) throws JSONException {
 
 		if (action.equals(ACTION_INIT_APPODEAL)) {
 			appKey = args.getString(0);
@@ -54,6 +56,7 @@ public class AppodealPlugin extends CordovaPlugin {
 					Appodeal.initialize(cordova.getActivity(), appKey, adType);
 				}
 			});
+			return true;
 		} else if (action.equals(ACTION_SET_INTERSTITIAL_CALLBACKS)) {
 			setInterstitialCallbacks = args.getBoolean(0);
 			cordova.getActivity().runOnUiThread(new Runnable() {
@@ -64,6 +67,7 @@ public class AppodealPlugin extends CordovaPlugin {
 					}
 				}
 			});
+			return true;
 		} else if (action.equals(ACTION_SET_VIDEO_CALLBACKS)) {
 			setVideoCallbacks = args.getBoolean(0);
 			cordova.getActivity().runOnUiThread(new Runnable() {
@@ -74,22 +78,45 @@ public class AppodealPlugin extends CordovaPlugin {
 					}
 				}
 			});
+			return true;
+		} else if (action.equals(ACTION_ISLOADED)) {
+			adType = args.getInt(0);
+			cordova.getActivity().runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					callback.success(Appodeal.isLoaded(adType) ? 1 : 0);
+				}
+			});
+			return true;
+		} else if (action.equals(ACTION_ISPRECACHE)) {
+			adType = args.getInt(0);
+			cordova.getActivity().runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					callback.success(Appodeal.isPrecache(adType) ? 1 : 0);
+				}
+			});
+			return true;
 		} else if (action.equals(ACTION_SHOW)) {
 			adType = args.getInt(0);
 			cordova.getActivity().runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-					Appodeal.show(cordova.getActivity(), adType);
+					boolean isShow = Appodeal.show(cordova.getActivity(), adType);
+					callback.success(isShow ? 1 : 0);
 				}
 			});
+			return true;
 		} else if (action.equals(ACTION_SHOW_WITH_PRICE_FLOOR)) {
 			adType = args.getInt(0);
 			cordova.getActivity().runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-					Appodeal.showWithPriceFloor(cordova.getActivity(), adType);
+					boolean isShow = Appodeal.showWithPriceFloor(cordova.getActivity(), adType);
+					callback.success(isShow ? 1 : 0);
 				}
 			});
+			return true;
 		} else if (action.equals(ACTION_SET_AUTO_CACHE)) {
 			adType = args.getInt(0);
 			autoCache = args.getBoolean(1);
@@ -99,6 +126,7 @@ public class AppodealPlugin extends CordovaPlugin {
 					Appodeal.setAutoCache(adType, autoCache);
 				}
 			});
+			return true;
 		} else if (action.equals(ACTION_CACHE_BANNER)) {
 			adType = args.getInt(0);
 			cordova.getActivity().runOnUiThread(new Runnable() {
@@ -107,6 +135,7 @@ public class AppodealPlugin extends CordovaPlugin {
 					Appodeal.cache(cordova.getActivity(), adType);
 				}
 			});
+			return true;
 		} else if (action.equals(ACTION_SET_ON_LOADED_TRIGGER_BOTH)) {
 			adType = args.getInt(0);
 			setOnTriggerBoth = args.getBoolean(1);
@@ -116,6 +145,7 @@ public class AppodealPlugin extends CordovaPlugin {
 					Appodeal.setOnLoadedTriggerBoth(adType, setOnTriggerBoth);
 				}
 			});
+			return true;
 		} else if (action.equals(ACTION_DISABLE_NETWORK)) {
 			final String network = args.getString(0);
 			cordova.getActivity().runOnUiThread(new Runnable() {
@@ -124,6 +154,7 @@ public class AppodealPlugin extends CordovaPlugin {
 					Appodeal.disableNetwork(network);
 				}
 			});
+			return true;
 		}
 		return false;
 	}

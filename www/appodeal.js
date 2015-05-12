@@ -1,3 +1,4 @@
+
 	var Appodeal = exports;
 
 	var exec = require('cordova/exec');
@@ -24,12 +25,20 @@
 		exec(null, null, "AppodealPlugin", "enableVideoCallbacks", [listener]);
 	}
 
-	Appodeal.show = function(adType) {
-		exec(null, null, "AppodealPlugin", "show", [adType]);
+	Appodeal.isLoaded = function(adType, callback) {
+		exec(function(e){if(typeof callback=='function'){if(e==1){callback(true);}else{callback(false);}}}, null, "AppodealPlugin", "isLoaded", [adType]);
 	}
 	
-	Appodeal.showWithPriceFloor = function(adType) {
-		exec(null, null, "AppodealPlugin", "showWithPriceFloor", [adType]);
+	Appodeal.isPrecache = function(adType, callback) {
+		exec(function(e){if(typeof callback=='function'){if(e==1){callback(true);}else{callback(false);}}}, null, "AppodealPlugin", "isPrecache", [adType]);
+	}
+	
+	Appodeal.show = function(adType, callback) {
+		exec(function(e){if(typeof callback=='function'){if(e==1){callback(true);}else{callback(false);}}}, null, "AppodealPlugin", "show", [adType]);
+	}
+
+	Appodeal.showWithPriceFloor = function(adType, callback) {
+		exec(function(e){if(typeof callback=='function'){if(e==1){callback(true);}else{callback(false);}}}, null, "AppodealPlugin", "showWithPriceFloor", [adType]);
 	}
 	
 	Appodeal.setAutoCache = function(adType, autoCache) {
