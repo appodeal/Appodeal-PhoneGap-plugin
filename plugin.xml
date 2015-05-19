@@ -37,10 +37,7 @@
 			<activity android:name="com.appodeal.ads.VideoActivity"
 				android:configChanges="orientation|screenSize"
 				android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-			<activity android:name="com.appodeal.ads.BannerActivity" 
-				android:configChanges="orientation|screenSize" 
-				android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-     		<activity android:name="com.appodeal.ads.LoaderActivity"
+			<activity android:name="com.appodeal.ads.LoaderActivity"
 				android:configChanges="orientation|screenSize"
 				android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
