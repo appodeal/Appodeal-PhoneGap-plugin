@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Looper;
 
 import com.appodeal.ads.Appodeal;
+import com.appodeal.ads.BannerCallbacks;
 import com.appodeal.ads.InterstitialCallbacks;
 import com.appodeal.ads.VideoCallbacks;
 
@@ -18,21 +19,25 @@ public class AppodealPlugin extends CordovaPlugin {
 	private static final String ACTION_INIT_APPODEAL_AD_TYPE = "initializeAdType";
 	private static final String ACTION_SET_INTERSTITIAL_CALLBACKS = "enableIntertitialCallbacks";
 	private static final String ACTION_SET_VIDEO_CALLBACKS = "enableVideoCallbacks";
+	private static final String ACTION_SET_BANNER_CALLBACKS = "enableBannerCallbacks";
 	private static final String ACTION_ISLOADED = "isLoaded";
 	private static final String ACTION_ISPRECACHE = "isPrecache";
 	private static final String ACTION_SHOW = "show";
+	private static final String ACTION_HIDE = "hide";
 	private static final String ACTION_SHOW_WITH_PRICE_FLOOR = "showWithPriceFloor";
 	private static final String ACTION_SET_AUTO_CACHE = "setAutoCache";
 	private static final String ACTION_CACHE_BANNER = "cacheBanner";
 	private static final String ACTION_SET_ON_LOADED_TRIGGER_BOTH = "setOnLoadedTriggerBoth";
 	private static final String ACTION_DISABLE_NETWORK = "disableNetwork";
+	private static final String ACTION_DISABLE_LOCATION_CHECK = "disableLocationCheck";
 	
 	private String appKey = null;
-	private int adType = 7;
+	private int adType = 127;
 	private boolean autoCache = true;
 	private boolean setOnTriggerBoth = true;
 	private boolean setInterstitialCallbacks = false;
 	private boolean setVideoCallbacks = false;
+	private boolean setBannerCallbacks = false;
 
 	@Override
 	public boolean execute(String action, JSONArray args,
@@ -79,6 +84,17 @@ public class AppodealPlugin extends CordovaPlugin {
 				}
 			});
 			return true;
+		} else if (action.equals(ACTION_SET_BANNER_CALLBACKS)) {
+			setBannerCallbacks = args.getBoolean(0);
+			cordova.getActivity().runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					if(setBannerCallbacks) {
+						Appodeal.setBannerCallbacks(bannerListener);
+					}
+				}
+			});
+			return true;
 		} else if (action.equals(ACTION_ISLOADED)) {
 			adType = args.getInt(0);
 			cordova.getActivity().runOnUiThread(new Runnable() {
@@ -104,6 +120,15 @@ public class AppodealPlugin extends CordovaPlugin {
 				public void run() {
 					boolean isShow = Appodeal.show(cordova.getActivity(), adType);
 					callback.success(isShow ? 1 : 0);
+				}
+			});
+			return true;
+		} else if (action.equals(ACTION_HIDE)) {
+			adType = args.getInt(0);
+			cordova.getActivity().runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					Appodeal.hide(cordova.getActivity(), adType);
 				}
 			});
 			return true;
@@ -152,6 +177,14 @@ public class AppodealPlugin extends CordovaPlugin {
 				@Override
 				public void run() {
 					Appodeal.disableNetwork(network);
+				}
+			});
+			return true;
+		} else if (action.equals(ACTION_DISABLE_LOCATION_CHECK)) {
+			cordova.getActivity().runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					Appodeal.disableLocationPermissionCheck();
 				}
 			});
 			return true;
@@ -260,6 +293,50 @@ public class AppodealPlugin extends CordovaPlugin {
 			    @Override
 			    public void run() {
 			    	webView.loadUrl ("javascript:cordova.fireDocumentEvent('onVideoShown');");
+			    }
+			});
+		}
+		
+	};
+	
+	private BannerCallbacks bannerListener = new BannerCallbacks() {
+
+		@Override
+		public void onBannerClicked() {
+			new Handler(Looper.getMainLooper()).post(new Runnable() {
+			    @Override
+			    public void run() {
+			    	webView.loadUrl ("javascript:cordova.fireDocumentEvent('onBannerClicked');");
+			    }
+			});
+		}
+
+		@Override
+		public void onBannerFailedToLoad() {
+			new Handler(Looper.getMainLooper()).post(new Runnable() {
+			    @Override
+			    public void run() {
+			    	webView.loadUrl ("javascript:cordova.fireDocumentEvent('onBannerFailedToLoad');");
+			    }
+			});
+		}
+
+		@Override
+		public void onBannerLoaded() {
+			new Handler(Looper.getMainLooper()).post(new Runnable() {
+			    @Override
+			    public void run() {
+			    	webView.loadUrl ("javascript:cordova.fireDocumentEvent('onBannerLoaded');");
+			    }
+			});
+		}
+
+		@Override
+		public void onBannerShown() {
+			new Handler(Looper.getMainLooper()).post(new Runnable() {
+			    @Override
+			    public void run() {
+			    	webView.loadUrl ("javascript:cordova.fireDocumentEvent('onBannerShown');");
 			    }
 			});
 		}

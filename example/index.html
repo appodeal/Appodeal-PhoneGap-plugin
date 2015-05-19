@@ -9,11 +9,11 @@
         <script type="text/javascript" >
         
         function initialize() { 
-        	Appodeal.setAutoCache(Appodeal.ALL, false);
         	var appKey = "d0d372258e42075f7d0a72029148dcba6c9d3d201a95d3cb";
-		    Appodeal.initialize(appKey, Appodeal.INTERSTITIAL | Appodeal.VIDEO); 
+		    Appodeal.initialize(appKey, Appodeal.ALL); 
 		    Appodeal.enableInterstitialCallbacks(true);
 		    Appodeal.enableVideoCallbacks(true);
+		    Appodeal.enableBannerCallbacks(true);
 		    
 		    registerAdEvents();
 		}
@@ -29,6 +29,12 @@
 		function cacheVideo() { 
 		    Appodeal.cache(Appodeal.VIDEO);
 		} 
+		function showBanner() { 
+		    Appodeal.show(Appodeal.BANNER_BOTTOM);
+		}
+		function hideBanner() { 
+		    Appodeal.hide(Appodeal.BANNER);
+		}
 		
 		function registerAdEvents() {
 		    document.addEventListener('onInterstitialShown', function(){});
@@ -41,14 +47,18 @@
 		    document.addEventListener('onVideoFinished', function(){});
 		    document.addEventListener('onVideoLoaded', function(){});
 		    document.addEventListener('onVideoShown', function(){});
+		    document.addEventListener('onBannerClicked', function(){});
+		    document.addEventListener('onBannerFailedToLoad', function(){});
+		    document.addEventListener('onBannerLoaded', function(){});
+		    document.addEventListener('onBannerShown', function(){});
 		}
 		
         </script>
         <p style="font-size:25px;color:white;">Appodeal PhoneGap Plugin</p>
         <button id="initialize" onclick="initialize();" style="width:100%;height:50px; margin-top:10px;background-color:white;color:red;">Initialize</button>
         <button id="interstitial" onclick="show();" style="width:100%;height:50px; margin-top:10px;background-color:white;color:red;">Interstitial</button>
-        <button id="cacheInterstitial" onclick="cacheInterstitial();" style="width:100%;height:50px; margin-top:10px;background-color:white;color:red;">Cache Interstitial</button>
         <button id="video" onclick="video();" style="width:100%;height:50px; margin-top:10px;background-color:white;color:red;">Video</button>
-        <button id="cacheVideo" onclick="cacheVideo();" style="width:100%;height:50px; margin-top:10px;background-color:white;color:red;">Cache Video</button>
+        <button id="showBanner" onclick="showBanner();" style="width:100%;height:50px; margin-top:10px;background-color:white;color:red;">Show Banner</button>
+        <button id="hideBanner" onclick="hideBanner();" style="width:100%;height:50px; margin-top:10px;background-color:white;color:red;">Hide Banner</button>
     </body>
 </html>

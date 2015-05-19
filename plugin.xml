@@ -2,7 +2,7 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="com.appodeal.plugin"
-    version="0.1">
+    version="1.2">
     <name>Appodeal Plugin</name>
     <description>Appodeal Plugin</description>
     <author>Appodeal</author>
@@ -37,7 +37,10 @@
 			<activity android:name="com.appodeal.ads.VideoActivity"
 				android:configChanges="orientation|screenSize"
 				android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-			<activity android:name="com.appodeal.ads.LoaderActivity"
+			<activity android:name="com.appodeal.ads.BannerActivity" 
+				android:configChanges="orientation|screenSize" 
+				android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+     		<activity android:name="com.appodeal.ads.LoaderActivity"
 				android:configChanges="orientation|screenSize"
 				android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
@@ -89,7 +92,7 @@
         </config-file>
         
         <source-file src="src/android/AppodealPlugin.java" target-dir="src/com/appodeal/plugin" />
-        <source-file src="libs/appodeal-1.11.2.jar" target-dir="libs" />
+        <source-file src="libs/appodeal-1.12.2.jar" target-dir="libs" />
 		<source-file src="libs/applovin-sdk-5.4.3.jar" target-dir="libs" />
 		<source-file src="libs/chartboost-5.2.0.jar" target-dir="libs" />
 		<source-file src="libs/supersonic-sdk-5.14.jar" target-dir="libs" />
