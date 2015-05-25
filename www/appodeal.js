@@ -8,9 +8,9 @@
 	Appodeal.VIDEO = 2;
 	Appodeal.BANNER = 4;
 	Appodeal.BANNER_BOTTOM = 8;
-    Appodeal.BANNER_TOP    = 16;
-    Appodeal.BANNER_CENTER = 32;
-    Appodeal.BANNER_VIEW   = 64;
+	Appodeal.BANNER_TOP    = 16;
+	Appodeal.BANNER_CENTER = 32;
+	Appodeal.BANNER_VIEW   = 64;
 	Appodeal.ANY = 127;
 	Appodeal.ALL = 127;
 	
@@ -18,7 +18,7 @@
 		exec(null, null, "AppodealPlugin", "initialize", [appKey]);
 	}
 	
-	Appodeal.initialize = function(appKey, adType) {
+	Appodeal.initializeAdType = function(appKey, adType) {
 		exec(null, null, "AppodealPlugin", "initializeAdType", [appKey, adType]);
 	}
 	
