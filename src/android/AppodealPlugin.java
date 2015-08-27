@@ -176,7 +176,7 @@ public class AppodealPlugin extends CordovaPlugin {
 			cordova.getActivity().runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-					Appodeal.disableNetwork(network);
+					Appodeal.disableNetwork(cordova.getActivity(), network);
 				}
 			});
 			return true;
