@@ -11,15 +11,16 @@ import android.os.Looper;
 import com.appodeal.ads.Appodeal;
 import com.appodeal.ads.BannerCallbacks;
 import com.appodeal.ads.InterstitialCallbacks;
+import com.appodeal.ads.RewardedVideoCallbacks;
 import com.appodeal.ads.VideoCallbacks;
 
 public class AppodealPlugin extends CordovaPlugin {
 
 	private static final String ACTION_INIT_APPODEAL = "initialize";
-	private static final String ACTION_INIT_APPODEAL_AD_TYPE = "initializeAdType";
 	private static final String ACTION_SET_INTERSTITIAL_CALLBACKS = "enableIntertitialCallbacks";
 	private static final String ACTION_SET_VIDEO_CALLBACKS = "enableVideoCallbacks";
 	private static final String ACTION_SET_BANNER_CALLBACKS = "enableBannerCallbacks";
+	private static final String ACTION_SET_REWARDED_VIDEO_CALLBACKS = "enableRewardedVideoCallbacks";
 	private static final String ACTION_ISLOADED = "isLoaded";
 	private static final String ACTION_ISPRECACHE = "isPrecache";
 	private static final String ACTION_SHOW = "show";
@@ -32,7 +33,7 @@ public class AppodealPlugin extends CordovaPlugin {
 	private static final String ACTION_DISABLE_LOCATION_CHECK = "disableLocationCheck";
 	
 	private String appKey = null;
-	private int adType = 127;
+	private int adType = 255;
 	private boolean autoCache = true;
 	private boolean setOnTriggerBoth = true;
 	private boolean setInterstitialCallbacks = false;
@@ -44,15 +45,6 @@ public class AppodealPlugin extends CordovaPlugin {
 			final CallbackContext callback) throws JSONException {
 
 		if (action.equals(ACTION_INIT_APPODEAL)) {
-			appKey = args.getString(0);
-			cordova.getActivity().runOnUiThread(new Runnable() {
-				@Override
-				public void run() {
-					Appodeal.initialize(cordova.getActivity(), appKey);
-				}
-			});
-			return true;
-		} else if (action.equals(ACTION_INIT_APPODEAL_AD_TYPE)) {
 			appKey = args.getString(0);
 			adType = args.getInt(1);
 			cordova.getActivity().runOnUiThread(new Runnable() {
@@ -80,6 +72,17 @@ public class AppodealPlugin extends CordovaPlugin {
 				public void run() {
 					if(setVideoCallbacks) {
 						Appodeal.setVideoCallbacks(videoListener);
+					}
+				}
+			});
+			return true;
+		} else if (action.equals(ACTION_SET_REWARDED_VIDEO_CALLBACKS)) {
+			setVideoCallbacks = args.getBoolean(0);
+			cordova.getActivity().runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					if(setVideoCallbacks) {
+						Appodeal.setRewardedVideoCallbacks(rewardedVideoListener);
 					}
 				}
 			});
@@ -293,6 +296,62 @@ public class AppodealPlugin extends CordovaPlugin {
 			    @Override
 			    public void run() {
 			    	webView.loadUrl ("javascript:cordova.fireDocumentEvent('onVideoShown');");
+			    }
+			});
+		}
+		
+	};
+	
+	private RewardedVideoCallbacks rewardedVideoListener = new RewardedVideoCallbacks() {
+
+		@Override
+		public void onVideoClosed() {
+			new Handler(Looper.getMainLooper()).post(new Runnable() {
+			    @Override
+			    public void run() {
+			    	webView.loadUrl ("javascript:cordova.fireDocumentEvent('onRewardedVideoClosed');");
+			    }
+			});
+		}
+
+		@Override
+		public void onVideoFailedToLoad() {
+			new Handler(Looper.getMainLooper()).post(new Runnable() {
+			    @Override
+			    public void run() {
+			    	webView.loadUrl ("javascript:cordova.fireDocumentEvent('onRewardedVideoFailedToLoad');");
+			    }
+			});
+		}
+
+		@Override
+		public void onVideoFinished(final int amount, final String name) {
+			new Handler(Looper.getMainLooper()).post(new Runnable() {
+			    @Override
+			    public void run() {
+			    	webView.loadUrl(String.format(
+		                    "javascript:cordova.fireDocumentEvent('onRewardedVideoFinished', { 'amount': %d, 'name':'%s' });",
+		                    amount, name));
+			    }
+			});
+		}
+
+		@Override
+		public void onVideoLoaded() {
+			new Handler(Looper.getMainLooper()).post(new Runnable() {
+			    @Override
+			    public void run() {
+					webView.loadUrl ("javascript:cordova.fireDocumentEvent('onRewardedVideoLoaded');");
+			    }
+			});
+		}
+
+		@Override
+		public void onVideoShown() {
+			new Handler(Looper.getMainLooper()).post(new Runnable() {
+			    @Override
+			    public void run() {
+			    	webView.loadUrl ("javascript:cordova.fireDocumentEvent('onRewardedVideoShown');");
 			    }
 			});
 		}
