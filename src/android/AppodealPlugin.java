@@ -305,7 +305,7 @@ public class AppodealPlugin extends CordovaPlugin {
 	private RewardedVideoCallbacks rewardedVideoListener = new RewardedVideoCallbacks() {
 
 		@Override
-		public void onVideoClosed() {
+		public void onRewardedVideoClosed() {
 			new Handler(Looper.getMainLooper()).post(new Runnable() {
 			    @Override
 			    public void run() {
@@ -315,7 +315,7 @@ public class AppodealPlugin extends CordovaPlugin {
 		}
 
 		@Override
-		public void onVideoFailedToLoad() {
+		public void onRewardedVideoFailedToLoad() {
 			new Handler(Looper.getMainLooper()).post(new Runnable() {
 			    @Override
 			    public void run() {
@@ -325,7 +325,7 @@ public class AppodealPlugin extends CordovaPlugin {
 		}
 
 		@Override
-		public void onVideoFinished(final int amount, final String name) {
+		public void onRewardedVideoFinished(final int amount, final String name) {
 			new Handler(Looper.getMainLooper()).post(new Runnable() {
 			    @Override
 			    public void run() {
@@ -337,7 +337,7 @@ public class AppodealPlugin extends CordovaPlugin {
 		}
 
 		@Override
-		public void onVideoLoaded() {
+		public void onRewardedVideoLoaded() {
 			new Handler(Looper.getMainLooper()).post(new Runnable() {
 			    @Override
 			    public void run() {
@@ -347,7 +347,7 @@ public class AppodealPlugin extends CordovaPlugin {
 		}
 
 		@Override
-		public void onVideoShown() {
+		public void onRewardedVideoShown() {
 			new Handler(Looper.getMainLooper()).post(new Runnable() {
 			    @Override
 			    public void run() {
