@@ -139,10 +139,6 @@
 		<source-file src="libs/appodeal-1.13.10.jar" target-dir="libs" />
 		<source-file src="libs/inmobi-5.0.1.jar" target-dir="libs" />
 		<source-file src="libs/yandex-metrica-android-2.00.jar" target-dir="libs" />
-		<source-file src="libs/applovin-6.1.4.jar" target-dir="libs" />
-		<source-file src="libs/chartboost-6.0.2.jar" target-dir="libs" />
-		<source-file src="libs/my-target-4.1.2.jar" target-dir="libs" />
-		<source-file src="libs/unity-ads-1.4.7.jar" target-dir="libs" />
 
     </platform>
 
