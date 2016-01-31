@@ -1,4 +1,4 @@
-#Appodeal Cordova Plugin
+#Appodeal PhoneGap Plugin
 
 Appodeal’s supply-side platform is designed and built by veteran publishers, for publishers. Appodeal is not an ad network, it is a new approach to monetizing for publishers. 
 
