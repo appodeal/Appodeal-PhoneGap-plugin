@@ -13,18 +13,20 @@
     </js-module>
 
     <platform name="android">
-      <config-file parent="/*" target="res/xml/config.xml">
-        <feature name="AppodealPlugin">
-          <param name="android-package" value="com.appodeal.plugin.AppodealPlugin"/>
-        </feature>
-      </config-file>
+		<config-file parent="/*" target="res/xml/config.xml">
+			<feature name="AppodealPlugin">
+				<param name="android-package" value="com.appodeal.plugin.AppodealPlugin"/>
+			</feature>
+		</config-file>
 
-      <config-file parent="/manifest" target="AndroidManifest.xml">
-        <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-        <uses-permission android:name="android.permission.INTERNET"/>
-        <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-        <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-      </config-file>
+		<config-file parent="/manifest" target="AndroidManifest.xml">
+			<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+			<uses-permission android:name="android.permission.INTERNET"/>
+			<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+			<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+		</config-file>
+		
+		<framework src="com.google.android.gms:play-services-ads:+" />
 
         <config-file parent="/manifest/application" target="AndroidManifest.xml">
 
@@ -46,8 +48,7 @@
 		    <activity android:name="ru.mail.android.mytarget.ads.MyTargetActivity" android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />
 		    <activity android:name="org.nexage.sourcekit.vast.activity.VPAIDActivity" android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
 		    <activity android:name="org.nexage.sourcekit.vast.activity.VASTActivity" android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
-		    <activity android:name="com.appodeal.ads.networks.vpaid.VPAIDActivity"
-              android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+		    <activity android:name="com.appodeal.ads.networks.vpaid.VPAIDActivity" android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
 		    <activity android:name="com.appodeal.ads.networks.SpotXActivity" android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
 		    <activity android:name="com.facebook.ads.InterstitialAdActivity" android:configChanges="keyboardHidden|orientation|screenSize" />
 		    <activity android:name="com.unity3d.ads.android.view.UnityAdsFullscreenActivity" android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen" android:theme="@android:style/Theme.NoTitleBar.Fullscreen" android:hardwareAccelerated="true" />
@@ -59,7 +60,7 @@
 		    <activity android:name="com.startapp.android.publish.list3d.List3DActivity" android:theme="@android:style/Theme" />
 		    <activity android:name="com.startapp.android.publish.OverlayActivity" android:configChanges="orientation|keyboardHidden|screenSize" android:theme="@android:style/Theme.Translucent" />
 		    <activity android:name="com.startapp.android.publish.FullScreenActivity" android:configChanges="orientation|keyboardHidden|screenSize" android:theme="@android:style/Theme" />
-		    <service android:name="com.yandex.metrica.MetricaService" android:enabled="true" android:exported="true" android:process=":Metrica"><intent-filter><action android:name="com.yandex.metrica.IMetricaService" /><category android:name="android.intent.category.DEFAULT" /></intent-filter><meta-data android:name="metrica:api:level" android:value="41" /></service>
+		    <service android:name="com.yandex.metrica.MetricaService" android:enabled="true" android:exported="true" android:process=":Metrica"><intent-filter><action android:name="com.yandex.metrica.IMetricaService" /><category android:name="android.intent.category.DEFAULT" /></intent-filter><meta-data android:name="metrica:api:level" android:value="44" /></service>
 		    <receiver android:name="com.yandex.metrica.MetricaEventHandler" android:enabled="true" android:exported="true"><intent-filter><action android:name="com.android.vending.INSTALL_REFERRER" /></intent-filter></receiver>
 		    <activity android:name="com.yandex.mobile.ads.AdActivity" android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />
 		    <activity android:name="com.inmobi.rendering.InMobiAdActivity" android:configChanges="keyboardHidden|orientation|keyboard|smallestScreenSize|screenSize" android:theme="@android:style/Theme.Translucent.NoTitleBar" android:hardwareAccelerated="true" android:excludeFromRecents="true" />
@@ -70,10 +71,9 @@
         </config-file>
 
 		<source-file src="src/android/AppodealPlugin.java" target-dir="src/com/appodeal/plugin" />
-		<source-file src="libs/android-support-v4.jar" target-dir="libs" />
-		<source-file src="libs/appodeal-1.14.12.jar" target-dir="libs" />
-		<source-file src="libs/inmobi-5.2.3.jar" target-dir="libs" />
-		<source-file src="libs/yandex-metrica-2.32.jar" target-dir="lib" />
+		<source-file src="libs/appodeal-1.14.14.jar" target-dir="libs" />
+		<source-file src="libs/inmobi-5.3.0.jar" target-dir="libs" />
+		<source-file src="libs/yandex-metrica-2.41.jar" target-dir="lib" />
 		<source-file src="libs/unity-ads-1.4.7.jar" target-dir="libs" />
 
     </platform>

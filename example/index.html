@@ -10,18 +10,18 @@
   <script type="text/javascript" src="js/index.js"></script>
   <script type="text/javascript">
   
-    function initialize() {
-      var appKey = "fee50c333ff3825fd6ad6d38cff78154de3025546d47a84f";
-	    Appodeal.confirm(Appodeal.SKIPPABLE_VIDEO);
-      Appodeal.setLogging(true);
-      //Appodeal.setTesting(true);
-      Appodeal.initialize(appKey, Appodeal.SKIPPABLE_VIDEO | Appodeal.INTERSTITIAL | Appodeal.BANNER | Appodeal.REWARDED_VIDEO);
-      Appodeal.enableInterstitialCallbacks(true);
-      Appodeal.enableSkippableVideoCallbacks(true);
-      Appodeal.enableBannerCallbacks(true);
-	    Appodeal.enableRewardedVideoCallbacks(true);
-      registerAdEvents();
-	  }
+	function initialize() {
+		var appKey = "fee50c333ff3825fd6ad6d38cff78154de3025546d47a84f";
+		Appodeal.confirm(Appodeal.SKIPPABLE_VIDEO);
+		Appodeal.setLogging(true);
+		//Appodeal.setTesting(true);
+		Appodeal.initialize(appKey, Appodeal.SKIPPABLE_VIDEO | Appodeal.INTERSTITIAL | Appodeal.BANNER | Appodeal.REWARDED_VIDEO);
+		Appodeal.enableInterstitialCallbacks(true);
+		Appodeal.enableSkippableVideoCallbacks(true);
+		Appodeal.enableBannerCallbacks(true);
+		Appodeal.enableRewardedVideoCallbacks(true);
+		registerAdEvents();
+	}
 	
     function showInterstitial() {
       Appodeal.show(Appodeal.INTERSTITIAL);
