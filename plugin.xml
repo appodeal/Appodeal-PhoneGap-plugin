@@ -186,11 +186,10 @@
 
 		<source-file src="src/android/AppodealPlugin.java" target-dir="src/com/appodeal/plugin" />
 		<source-file src="libs/appodeal-1.15.2.jar" target-dir="libs" />
-		<source-file src="libs/yandex-metrica-2.41.jar" target-dir="lib" />
-		<resource-file src="libs/unity-ads-1.5.8.aar" target="libs/unity-ads.aar" />
-		<framework src="src/android/unity-ads.gradle" custom="true" type="gradleReference" />
-		<resource-file src="libs/cheetah-mobile-3.4.7.aar" target="libs/cheetah-mobile.aar" />
-		<framework src="src/android/cheetah-mobile.gradle" custom="true" type="gradleReference" />
+		<source-file src="libs/yandex-metrica-2.41.jar" target-dir="libs" />
+		
+		<framework src="libs/cheetah-mobile" custom="true" />
+		<framework src="libs/unity-ads" custom="true" />
 
     </platform>
 
