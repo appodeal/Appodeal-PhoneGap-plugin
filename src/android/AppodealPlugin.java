@@ -50,6 +50,7 @@ public class AppodealPlugin extends CordovaPlugin {
     private boolean setBannerCallbacks = false;
     private boolean testing = false;
     private boolean logging = false;
+    private boolean smartbanners = false;
 
     @Override
     public boolean execute(String action, JSONArray args,
@@ -249,11 +250,11 @@ public class AppodealPlugin extends CordovaPlugin {
             });
             return true;
         } else if (action.equals(ACTION_SET_SMARTBANNERS)) {
-            value = args.getBoolean(0);
+            smartbanners = args.getBoolean(0);
             cordova.getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Appodeal.setSmartBanners(value);
+                    Appodeal.setSmartBanners(smartbanners);
                 }
             });
             return true;
