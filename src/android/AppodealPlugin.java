@@ -37,6 +37,7 @@ public class AppodealPlugin extends CordovaPlugin {
     private static final String ACTION_DISABLE_WRITE_CHECK = "disableWriteCheck";
     private static final String ACTION_SET_TESTING = "setTesting";
     private static final String ACTION_SET_LOGGING = "setLogging";
+    private static final String ACTION_SET_SMARTBANNERS = "setSmartBanners";
     
     private String appKey = null;
     private int adType = 0;
@@ -244,6 +245,15 @@ public class AppodealPlugin extends CordovaPlugin {
                 @Override
                 public void run() {
                     Appodeal.setTesting(testing);
+                }
+            });
+            return true;
+        } else if (action.equals(ACTION_SET_SMARTBANNERS)) {
+            value = args.getBoolean(0);
+            cordova.getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Appodeal.setSmartBanners(value);
                 }
             });
             return true;

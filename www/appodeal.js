@@ -93,3 +93,7 @@ Appodeal.setLogging = function(logging) {
 Appodeal.setTesting = function(testing) {
 	exec(null, null, "AppodealPlugin", "setTesting", [testing]);
 }
+
+Appodeal.setSmartBanners = function(value) {
+	exec(null, null, "AppodealPlugin", "setSmartBanners", [value]);
+}
