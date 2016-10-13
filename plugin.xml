@@ -75,17 +75,17 @@
                   android:theme="@android:style/Theme.NoTitleBar.Fullscreen"/>
             <activity android:name="com.facebook.ads.InterstitialAdActivity" android:configChanges="keyboardHidden|orientation|screenSize" />
             <activity android:name="com.unity3d.ads.adunit.AdUnitActivity"
-			    android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen"
-			    android:theme="@android:style/Theme.NoTitleBar.Fullscreen" android:hardwareAccelerated="true" />
-			<activity android:name="com.unity3d.ads.adunit.AdUnitSoftwareActivity"
-			    android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen"
-			    android:theme="@android:style/Theme.NoTitleBar.Fullscreen" android:hardwareAccelerated="false" />
-			<activity android:name="com.unity3d.ads2.adunit.AdUnitActivity"
-			    android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen"
-			    android:theme="@android:style/Theme.NoTitleBar.Fullscreen" android:hardwareAccelerated="true" />
-			<activity android:name="com.unity3d.ads2.adunit.AdUnitSoftwareActivity"
-			    android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen"
-			    android:theme="@android:style/Theme.NoTitleBar.Fullscreen" android:hardwareAccelerated="false" />
+			            android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen"
+			            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" android:hardwareAccelerated="true" />
+			      <activity android:name="com.unity3d.ads.adunit.AdUnitSoftwareActivity"
+           			  android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen"
+			            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" android:hardwareAccelerated="false" />
+			      <activity android:name="com.unity3d.ads2.adunit.AdUnitActivity"
+			            android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen"
+			            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" android:hardwareAccelerated="true" />
+			      <activity android:name="com.unity3d.ads2.adunit.AdUnitSoftwareActivity"
+			            android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen"
+			            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" android:hardwareAccelerated="false" />
             <activity android:name="com.jirbo.adcolony.AdColonyOverlay"
                   android:configChanges="keyboardHidden|orientation|screenSize"
                   android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
@@ -132,11 +132,11 @@
             <service android:name="com.cmcm.picks.init.DownloadService" android:exported="false" android:process=":PickService" />
             <activity android:name="com.cmcm.picks.vastvideo.FullScreenVideoActivity" android:excludeFromRecents="true" android:launchMode="singleInstance" android:screenOrientation="landscape"/>
             <activity android:name="com.revmob.FullscreenActivity" android:theme="@android:style/Theme.Translucent" android:configChanges="keyboardHidden|orientation"/>
-			<activity android:name="com.tapjoy.TJAdUnitActivity" android:configChanges="orientation|keyboardHidden|screenSize"
+			      <activity android:name="com.tapjoy.TJAdUnitActivity" android:configChanges="orientation|keyboardHidden|screenSize"
 			          android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
-			<activity android:name="com.tapjoy.mraid.view.ActionHandler" android:configChanges="orientation|keyboardHidden|screenSize" />
-			<activity android:name="com.tapjoy.mraid.view.Browser" android:configChanges="orientation|keyboardHidden|screenSize" />
-			<activity android:name="com.tapjoy.TJContentActivity" android:configChanges="orientation|keyboardHidden|screenSize"
+			      <activity android:name="com.tapjoy.mraid.view.ActionHandler" android:configChanges="orientation|keyboardHidden|screenSize" />
+			      <activity android:name="com.tapjoy.mraid.view.Browser" android:configChanges="orientation|keyboardHidden|screenSize" />
+			      <activity android:name="com.tapjoy.TJContentActivity" android:configChanges="orientation|keyboardHidden|screenSize"
 			          android:theme="@android:style/Theme.Translucent.NoTitleBar" android:hardwareAccelerated="true" />
         </config-file>
         <source-file src="src/android/AppodealPlugin.java" target-dir="src/com/appodeal/plugin" />
@@ -145,7 +145,7 @@
         <framework src="libs/android/cheetah-mobile" custom="true" />
     </platform>
     
-<platform name="ios">
+    <platform name="ios">
       <config-file parent="/widget" target="config.xml">
         <feature name="AppodealPlugin">
           <param name="ios-package" value="AppodealPlugin"/>
@@ -191,43 +191,42 @@
       	<!-- Appodeal -->
       	<framework custom="true" src="libs/iOS/Appodeal/Appodeal.framework"/>
       	<resource-file src="libs/iOS/Appodeal/Appodeal.bundle"/>
-
-		<!-- AdColony -->
+		    <!-- AdColony -->
       	<framework custom="true" src="libs/iOS/Adapters/APDAdColonyAdapter.embeddedframework/AdColony.framework"/>
       	<source-file src="libs/iOS/Adapters/APDAdColonyAdapter.embeddedframework/libAPDAdColonyAdapter.a" framework="true"/>
       	<!-- Amazon -->
-  		<framework custom="true" src="libs/iOS/Adapters/APDAmazonAdsAdapter.embeddedframework/AmazonAd.framework"/>
+  		  <framework custom="true" src="libs/iOS/Adapters/APDAmazonAdsAdapter.embeddedframework/AmazonAd.framework"/>
       	<source-file src="libs/iOS/Adapters/APDAmazonAdsAdapter.embeddedframework/libAPDAmazonAdsAdapter.a" framework="true"/>
       	<!-- Aplovin -->
-   		<source-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/libAPDAppLovinAdapter.a" framework="true"/>
+   		  <source-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/libAPDAppLovinAdapter.a" framework="true"/>
       	<source-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/libAppLovinSdk.a" framework="true"/>
-		<header-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/headers/ALAd.h"/>
-		<header-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/headers/ALAdDisplayDelegate.h"/>
-		<header-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/headers/ALAdLoadDelegate.h"/>
-		<header-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/headers/ALAdRewardDelegate.h"/>
-		<header-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/headers/ALAdService.h"/>
-		<header-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/headers/ALAdSize.h"/>
-		<header-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/headers/ALAdType.h"/>
-		<header-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/headers/ALAdUpdateDelegate.h"/>
-		<header-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/headers/ALAdVideoPlaybackDelegate.h"/>
-		<header-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/headers/ALAdView.h"/>
-		<header-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/headers/ALAnnotations.h"/>
-		<header-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/headers/ALErrorCodes.h"/>
-		<header-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/headers/ALEventService.h"/>
-		<header-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/headers/ALEventTypes.h"/>
-		<header-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/headers/ALIncentivizedInterstitialAd.h"/>
-		<header-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/headers/ALInterstitialAd.h"/>
-		<header-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/headers/ALNativeAd.h"/>
-		<header-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/headers/ALNativeAdLoadDelegate.h"/>
-		<header-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/headers/ALNativeAdPrecacheDelegate.h"/>
-		<header-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/headers/ALNativeAdService.h"/>
-		<header-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/headers/ALPostbackDelegate.h"/>
-		<header-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/headers/ALPostbackService.h"/>
-		<header-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/headers/ALSdk.h"/>
-		<header-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/headers/ALSdkSettings.h"/>
-		<header-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/headers/ALSwiftHeaders.h"/>
-		<header-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/headers/ALTargetingData.h"/>
-		<!-- Chartboost -->
+    		<header-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/headers/ALAd.h"/>
+    		<header-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/headers/ALAdDisplayDelegate.h"/>
+    		<header-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/headers/ALAdLoadDelegate.h"/>
+    		<header-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/headers/ALAdRewardDelegate.h"/>
+    		<header-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/headers/ALAdService.h"/>
+    		<header-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/headers/ALAdSize.h"/>
+    		<header-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/headers/ALAdType.h"/>
+    		<header-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/headers/ALAdUpdateDelegate.h"/>
+    		<header-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/headers/ALAdVideoPlaybackDelegate.h"/>
+    		<header-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/headers/ALAdView.h"/>
+    		<header-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/headers/ALAnnotations.h"/>
+    		<header-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/headers/ALErrorCodes.h"/>
+    		<header-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/headers/ALEventService.h"/>
+    		<header-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/headers/ALEventTypes.h"/>
+    		<header-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/headers/ALIncentivizedInterstitialAd.h"/>
+    		<header-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/headers/ALInterstitialAd.h"/>
+    		<header-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/headers/ALNativeAd.h"/>
+    		<header-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/headers/ALNativeAdLoadDelegate.h"/>
+    		<header-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/headers/ALNativeAdPrecacheDelegate.h"/>
+    		<header-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/headers/ALNativeAdService.h"/>
+    		<header-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/headers/ALPostbackDelegate.h"/>
+    		<header-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/headers/ALPostbackService.h"/>
+    		<header-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/headers/ALSdk.h"/>
+    		<header-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/headers/ALSdkSettings.h"/>
+    		<header-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/headers/ALSwiftHeaders.h"/>
+    		<header-file src="libs/iOS/Adapters/APDAppLovinAdapter.embeddedframework/headers/ALTargetingData.h"/>
+    		<!-- Chartboost -->
       	<framework custom="true" src="libs/iOS/Adapters/APDChartboostAdapter.embeddedframework/Chartboost.framework"/>
       	<source-file src="libs/iOS/Adapters/APDChartboostAdapter.embeddedframework/libAPDChartboostAdapter.a" framework="true"/>
       	<!-- Facebook Audience Network -->
@@ -239,7 +238,7 @@
       	<!-- InMobi -->
       	<framework custom="true" src="libs/iOS/Adapters/APDInMobyAdapter.embeddedframework/InMobiSDK.framework"/>
       	<source-file src="libs/iOS/Adapters/APDInMobyAdapter.embeddedframework/libAPDInMobyAdapter.a" framework="true"/>
-		<!-- MyTarget -->
+		    <!-- MyTarget -->
       	<framework custom="true" src="libs/iOS/Adapters/APDMyTargetAdapter.embeddedframework/MyTargetSDK.framework"/>
       	<source-file src="libs/iOS/Adapters/APDMyTargetAdapter.embeddedframework/libAPDMyTargetAdapter.a" framework="true"/>
       	<!-- StartApp -->
@@ -285,46 +284,46 @@
       	<resource-file src="libs/iOS/Adapters/APDVungleAdapter.embeddedframework/Resources/vg_mute_on.png"/>
       	<resource-file src="libs/iOS/Adapters/APDVungleAdapter.embeddedframework/Resources/vg_privacy.png"/>
       	<!-- Yandex -->
-		<framework custom="true" src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/YandexMobileMetrica.framework"/>
+		    <framework custom="true" src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/YandexMobileMetrica.framework"/>
       	<source-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/libAPDYandexAdapter.a" framework="true"/>
       	<source-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/libYandexMobileAds.a" framework="true"/>
-		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YandexMobileAds.h"/>
-		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YandexMobileNativeAds.h"/>
-		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YandexMobileVASTAds.h"/>
-		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMAAdRequest.h"/>
-		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMAAdSize.h"/>
-		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMAAdView.h"/>
-		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMABlock.h"/>
-		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMABlocksInfo.h"/>
-		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMACreative.h"/>
-		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMAErrors.h"/>
-		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMAIcon.h"/>
-		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMAInterstitialController.h"/>
-		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMALog.h"/>
-		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMAMediaFile.h"/>
-		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMAMobileAds.h"/>
-		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMANativeAdAssets.h"/>
-		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMANativeAdDelegate.h"/>
-		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMANativeAdErrors.h"/>
-		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMANativeAdImage.h"/>
-		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMANativeAdLoader.h"/>
-		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMANativeAdLoaderConfiguration.h"/>
-		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMANativeAdTypes.h"/>
-		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMANativeAppInstallAd.h"/>
-		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMANativeAppInstallAdView.h"/>
-		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMANativeAssetsAppearance.h"/>
-		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMANativeBannerView.h"/>
-		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMANativeContentAd.h"/>
-		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMANativeContentAdView.h"/>
-		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMANativeGenericAd.h"/>
-		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMANativeImageLoadingObserver.h"/>
-		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMANativeTemplateAppearance.h"/>
-		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMARating.h"/>
-		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMAVASTAd.h"/>
-		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMAVASTErrors.h"/>
-		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMAVASTTracker.h"/>
-		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMAVersion.h"/>
-		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMAVideoAdsRequest.h"/>
-		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMAYandexVASTAds.h"/>
-    </platform>
-  </plugin>
+    		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YandexMobileAds.h"/>
+    		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YandexMobileNativeAds.h"/>
+    		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YandexMobileVASTAds.h"/>
+    		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMAAdRequest.h"/>
+    		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMAAdSize.h"/>
+    		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMAAdView.h"/>
+    		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMABlock.h"/>
+    		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMABlocksInfo.h"/>
+    		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMACreative.h"/>
+    		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMAErrors.h"/>
+    		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMAIcon.h"/>
+    		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMAInterstitialController.h"/>
+    		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMALog.h"/>
+    		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMAMediaFile.h"/>
+    		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMAMobileAds.h"/>
+    		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMANativeAdAssets.h"/>
+    		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMANativeAdDelegate.h"/>
+    		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMANativeAdErrors.h"/>
+    		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMANativeAdImage.h"/>
+    		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMANativeAdLoader.h"/>
+    		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMANativeAdLoaderConfiguration.h"/>
+    		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMANativeAdTypes.h"/>
+    		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMANativeAppInstallAd.h"/>
+    		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMANativeAppInstallAdView.h"/>
+    		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMANativeAssetsAppearance.h"/>
+    		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMANativeBannerView.h"/>
+    		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMANativeContentAd.h"/>
+    		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMANativeContentAdView.h"/>
+    		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMANativeGenericAd.h"/>
+    		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMANativeImageLoadingObserver.h"/>
+    		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMANativeTemplateAppearance.h"/>
+    		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMARating.h"/>
+    		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMAVASTAd.h"/>
+    		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMAVASTErrors.h"/>
+    		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMAVASTTracker.h"/>
+    		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMAVersion.h"/>
+    		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMAVideoAdsRequest.h"/>
+    		<header-file src="libs/iOS/Adapters/APDYandexAdapter.embeddedframework/Headers/YMAYandexVASTAds.h"/>
+      </platform>
+</plugin>
