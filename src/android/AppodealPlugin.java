@@ -539,13 +539,13 @@ public class AppodealPlugin extends CordovaPlugin {
         if((adtype & 2) > 0) {
             type |= Appodeal.SKIPPABLE_VIDEO;
         }
-        if(((adtype & 4) > 0) {
+        if((adtype & 4) > 0) {
             type |= Appodeal.BANNER;
         }
-        if(((adtype & 8) > 0) {
+        if((adtype & 8) > 0) {
             type |= Appodeal.BANNER_BOTTOM;
         }
-        if(((adtype & 16) > 0) {
+        if((adtype & 16) > 0) {
             type |= Appodeal.BANNER_TOP;
         }
         if((adtype & 128) > 0) {
