@@ -140,8 +140,8 @@
 	</config-file>
 
 	<source-file src="src/android/AppodealPlugin.java" target-dir="src/com/appodeal/plugin" />
-	<source-file src="libs/Android/appodeal-1.15.7.jar" target-dir="libs" />
-	<source-file src="libs/Android/yandex-metrica-2.41.jar" target-dir="libs" />
+	<source-file src="libs/Android/appodeal-1.15.8.jar" target-dir="libs" />
+	<source-file src="libs/Android/yandex-metrica-2.51.jar" target-dir="libs" />
 	<framework src="libs/Android/cheetah-mobile" custom="true" />
 
     </platform>
