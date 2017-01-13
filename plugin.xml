@@ -146,11 +146,32 @@
 
     </platform>
     
+    
     <platform name="ios">
       <config-file parent="/widget" target="config.xml">
         <feature name="AppodealPlugin">
           <param name="ios-package" value="AppodealPlugin"/>
         </feature>
+      </config-file>
+      <config-file target="*-Info.plist" parent="NSAppTransportSecurity">
+          <dict>
+              <key>NSAllowsArbitraryLoads</key>
+              <true/>
+              <key>NSAllowsArbitraryLoadsInWebContent</key>
+              <true/>
+          </dict>
+      </config-file>
+      <config-file target="*-Info.plist" parent="NSCalendarsUsageDescription">
+          <string>Advertising</string>
+      </config-file>
+      <config-file target="*-Info.plist" parent="NSBluetoothPeripheralUsageDescription">
+          <string>Advertising</string>
+      </config-file>
+      <config-file target="*-Info.plist" parent="NSLocationWhenInUseUsageDescription">
+          <string>Advertising</string>
+      </config-file>
+      <config-file target="*-Info.plist" parent="NSPhotoLibraryUsageDescription">
+          <string>Advertising</string>
       </config-file>
 
       <header-file src="src/ios/AppodealPlugin.h"/>
