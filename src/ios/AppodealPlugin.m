@@ -2,8 +2,7 @@
 #import <UIKit/UIKit.h>
 #import <objc/runtime.h>
 
-const int INTERSTITIAL        = 1;
-const int VIDEO               = 2;
+const int INTERSTITIAL        = 3;
 const int BANNER              = 4;
 const int BANNER_BOTTOM       = 8;
 const int BANNER_TOP          = 16;
@@ -20,16 +19,23 @@ bool bannerIsShowing;
 bool hasStatusBarPlugin = false;
 bool isIphone;
 
+NSString *CALLBACK_EVENT = @"event";
+NSString *CALLBACK_INIT = @"onInit";
+NSString *CALLBACK_LOADED = @"onLoaded";
+NSString *CALLBACK_FAILED = @"onFailedToLoad";
+NSString *CALLBACK_CLICKED = @"onClick";
+NSString *CALLBACK_SHOWN = @"onShown";
+NSString *CALLBACK_CLOSED = @"onClosed";
+NSString *CALLBACK_FINISHED = @"onFinished";
+
+bool isRewardedFinished = NO;
+bool isNonSkippableFinished = NO;
 
 int nativeAdTypesForType(int adTypes) {
     int nativeAdTypes = 0;
     
     if ((adTypes & INTERSTITIAL) > 0) {
         nativeAdTypes |= AppodealAdTypeInterstitial;
-    }
-    
-    if ((adTypes & VIDEO) > 0) {
-        nativeAdTypes |= AppodealAdTypeSkippableVideo;
     }
     
     if ((adTypes & BANNER) > 0 ||
@@ -50,14 +56,8 @@ int nativeAdTypesForType(int adTypes) {
 }
 
 int nativeShowStyleForType(int adTypes) {
-    bool isInterstitial = (adTypes & INTERSTITIAL) > 0;
-    bool isVideo = (adTypes & VIDEO) > 0;
     
-    if (isInterstitial && isVideo) {
-        return AppodealShowStyleVideoOrInterstitial;
-    } else if (isVideo) {
-        return AppodealShowStyleSkippableVideo;
-    } else if (isInterstitial) {
+    if ((adTypes & INTERSTITIAL) > 0) {
         return AppodealShowStyleInterstitial;
     }
     
@@ -82,19 +82,28 @@ int nativeShowStyleForType(int adTypes) {
 
 @implementation AppodealPlugin
 
-- (void)bannerDidLoadAd
+- (void)bannerDidLoadAdIsPrecache:(BOOL)precache
 {
-    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('onBannerLoaded')"];
+    NSDictionary *vals = @{CALLBACK_EVENT: CALLBACK_LOADED, @"isPrecache": [NSNumber numberWithBool:precache], @"height": @"0"};
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:vals];
+    [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:self.bannerCallbackID];
 }
 
 - (void)bannerDidFailToLoadAd
 {
-    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('onBannerFailedToLoad')"];
+    NSDictionary *vals = @{CALLBACK_EVENT: CALLBACK_FAILED};
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:vals];
+    [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:self.bannerCallbackID];
 }
 
 - (void)bannerDidClick
 {
-    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('onBannerClicked')"];
+    NSDictionary *vals = @{CALLBACK_EVENT: CALLBACK_CLICKED};
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:vals];
+    [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:self.bannerCallbackID];
 }
 
 
@@ -103,128 +112,149 @@ int nativeShowStyleForType(int adTypes) {
     bannerIsShowing = true;
     if (bannerOverlap)
         [self changeWebViewWithOverlappedBanner];
-    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('onBannerShown')"];
+    
+    NSDictionary *vals = @{CALLBACK_EVENT: CALLBACK_SHOWN};
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:vals];
+    [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:self.bannerCallbackID];
 }
 
 // interstitial
-- (void)interstitialDidLoadAd
+- (void)interstitialDidLoadAdisPrecache:(BOOL)precache
 {
-    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('onInterstitialLoaded')"];
+    NSDictionary *vals = @{CALLBACK_EVENT: CALLBACK_LOADED, @"isPrecache": [NSNumber numberWithBool:precache]};
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:vals];
+    [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:self.interstitialCallbackID];
 }
 
 - (void)interstitialDidFailToLoadAd
 {
-    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('onInterstitialFailedToLoad')"];
+    NSDictionary *vals = @{CALLBACK_EVENT: CALLBACK_FAILED};
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:vals];
+    [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:self.interstitialCallbackID];
 }
 
 - (void)interstitialWillPresent
 {
-    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('onInterstitialShown')"];
+    NSDictionary *vals = @{CALLBACK_EVENT: CALLBACK_SHOWN};
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:vals];
+    [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:self.interstitialCallbackID];
 }
 
 - (void)interstitialDidDismiss
 {
-    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('onInterstitialClosed')"];
+    NSDictionary *vals = @{CALLBACK_EVENT: CALLBACK_CLOSED};
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:vals];
+    [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:self.interstitialCallbackID];
 }
 
 - (void)interstitialDidClick
 {
-    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('onInterstitialClicked')"];
+    NSDictionary *vals = @{CALLBACK_EVENT: CALLBACK_CLICKED};
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:vals];
+    [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:self.interstitialCallbackID];
 }
 
 // rewarded video
 - (void)rewardedVideoDidLoadAd
 {
-    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('onRewardedVideoLoaded')"];
+    NSDictionary *vals = @{CALLBACK_EVENT: CALLBACK_LOADED};
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:vals];
+    [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:self.rewardedCallbackID];
 }
 
 - (void)rewardedVideoDidFailToLoadAd
 {
-    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('onRewardedVideoFailedToLoad')"];
+    NSDictionary *vals = @{CALLBACK_EVENT: CALLBACK_FAILED};
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:vals];
+    [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:self.rewardedCallbackID];
 }
 
 - (void)rewardedVideoDidPresent
 {
-    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('onRewardedVideoShown')"];
+    isRewardedFinished = NO;
+    
+    NSDictionary *vals = @{CALLBACK_EVENT: CALLBACK_SHOWN};
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:vals];
+    [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:self.rewardedCallbackID];
 }
 
 - (void)rewardedVideoWillDismiss
 {
-    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('onRewardedVideoClosed')"];
+    NSDictionary *vals = @{CALLBACK_EVENT: CALLBACK_CLOSED, @"finished": [NSNumber numberWithBool:isRewardedFinished]};
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:vals];
+    [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:self.rewardedCallbackID];
 }
 
 - (void)rewardedVideoDidFinish:(NSUInteger)rewardAmount name:(NSString *)rewardName
 {
-    NSString* script = [NSString stringWithFormat:@"cordova.fireDocumentEvent('onRewardedVideoFinished', { amount: %lu, name: '%@' })", rewardAmount, rewardName];
-    [self.commandDelegate evalJs:script];
+    isRewardedFinished = YES;
+    
+    NSMutableDictionary * rewardDict = [NSMutableDictionary new];
+    rewardDict[CALLBACK_EVENT] = CALLBACK_FINISHED;
+    rewardDict[@"rewardName"] = rewardName;
+    rewardDict[@"rewardCount"] = @(rewardAmount);
+    
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:rewardDict];
+    [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:self.rewardedCallbackID];
 }
 
-- (void)rewardedVideoDidClick
-{
-    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('onRewardedVideoClicked')"];
-}
 
 // non skippable video
 - (void)nonSkippableVideoDidLoadAd
 {
-    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('onNonSkippableVideoLoaded')"];
+    NSDictionary *vals = @{CALLBACK_EVENT: CALLBACK_LOADED};
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:vals];
+    [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:self.rewardedCallbackID];
 }
 
 - (void)nonSkippableVideoDidFailToLoadAd
 {
-    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('onNonSkippableVideoFailedToLoad')"];
+    NSDictionary *vals = @{CALLBACK_EVENT: CALLBACK_FAILED};
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:vals];
+    [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:self.rewardedCallbackID];
 }
 
 - (void)nonSkippableVideoDidPresent
 {
-    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('onNonSkippableVideoShown')"];
+    isNonSkippableFinished = NO;
+    
+    NSDictionary *vals = @{CALLBACK_EVENT: CALLBACK_SHOWN};
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:vals];
+    [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:self.rewardedCallbackID];
 }
 
 - (void)nonSkippableVideoWillDismiss
 {
-    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('onNonSkippableVideoClosed')"];
+    NSDictionary *vals = @{CALLBACK_EVENT: CALLBACK_CLOSED, @"finished": [NSNumber numberWithBool:isNonSkippableFinished]};
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:vals];
+    [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:self.rewardedCallbackID];
 }
 
 - (void)nonSkippableVideoDidFinish
 {
-    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('onNonSkippableVideoFinished')"];
+    isNonSkippableFinished = YES;
+    
+    NSDictionary *vals = @{CALLBACK_EVENT: CALLBACK_FINISHED};
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:vals];
+    [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:self.rewardedCallbackID];
 }
 
-- (void)nonSkippableVideoDidClick
-{
-    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('onNonSkippableVideoClicked')"];
-}
-
-// skippable video
-- (void)skippableVideoDidLoadAd
-{
-    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('onSkippableVideoLoaded')"];
-}
-
-- (void)skippableVideoDidFailToLoadAd
-{
-    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('onSkippableVideoFailedToLoad')"];
-}
-
-- (void)skippableVideoDidPresent
-{
-    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('onSkippableVideoShown')"];
-}
-
-- (void)skippableVideoWillDismiss
-{
-    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('onSkippableVideoClosed')"];
-}
-
-- (void)skippableVideoDidFinish
-{
-    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('onSkippableVideoFinished')"];
-}
-
-- (void)skippableVideoDidClick
-{
-    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('onSkippableVideoClicked')"];
-}
 
 - (void) disableNetworkType:(CDVInvokedUrlCommand*)command
 {
@@ -254,20 +284,16 @@ int nativeShowStyleForType(int adTypes) {
 
 - (void) initialize:(CDVInvokedUrlCommand*)command
 {
-    if (![Appodeal isInitalized])
-    {
-        [Appodeal setFramework:APDFrameworkCordova];
-        if ([[[command arguments] objectAtIndex:1] intValue] & BANNER) {
-            if (bannerOverlap) {
-                [self setDelegateOnOverlap:(AppodealAdType)nativeAdTypesForType([[[command arguments] objectAtIndex:1] intValue])];
-            }
-            [self detectStatusBarPlugin];
-            bannerHeight = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? 90.f : 50.f);
-            isIphone = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? false : true);
+    [Appodeal setFramework:APDFrameworkCordova];
+    if ([[[command arguments] objectAtIndex:1] intValue] & BANNER) {
+        if (bannerOverlap) {
+            [self setDelegateOnOverlap:(AppodealAdType)nativeAdTypesForType([[[command arguments] objectAtIndex:1] intValue])];
         }
-        [Appodeal initializeWithApiKey:[[command arguments] objectAtIndex:0] types:nativeAdTypesForType ([[[command arguments] objectAtIndex:1] intValue])];
-        
+        [self detectStatusBarPlugin];
+        bannerHeight = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? 90.f : 50.f);
+        isIphone = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? false : true);
     }
+    [Appodeal initializeWithApiKey:[[command arguments] objectAtIndex:0] types:nativeAdTypesForType ([[[command arguments] objectAtIndex:1] intValue])];    
 }
 
 - (void) isInitalized:(CDVInvokedUrlCommand*)command
@@ -282,34 +308,49 @@ int nativeShowStyleForType(int adTypes) {
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
-- (void) enableInterstitialCallbacks:(CDVInvokedUrlCommand*)command
+- (void) setInterstitialCallbacks:(CDVInvokedUrlCommand*)command
 {
     [Appodeal setInterstitialDelegate:self];
+    self.interstitialCallbackID = command.callbackId;
+    NSDictionary *vals = @{CALLBACK_EVENT: CALLBACK_INIT};
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:vals];
+    [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:self.interstitialCallbackID];
 }
 
-- (void) enableBannerCallbacks:(CDVInvokedUrlCommand*)command
+- (void) setBannerCallbacks:(CDVInvokedUrlCommand*)command
 {
     [Appodeal setBannerDelegate:self];
+    self.bannerCallbackID = command.callbackId;
+    NSDictionary *vals = @{CALLBACK_EVENT: CALLBACK_INIT};
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:vals];
+    [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:self.bannerCallbackID];
 }
 
-- (void) enableSkippableVideoCallbacks:(CDVInvokedUrlCommand*)command
-{
-    [Appodeal setSkippableVideoDelegate:self];
-}
-
-- (void) enableRewardedVideoCallbacks:(CDVInvokedUrlCommand*)command
+- (void) setRewardedVideoCallbacks:(CDVInvokedUrlCommand*)command
 {
     [Appodeal setRewardedVideoDelegate:self];
+    self.rewardedCallbackID = command.callbackId;
+    NSDictionary *vals = @{CALLBACK_EVENT: CALLBACK_INIT};
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:vals];
+    [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:self.rewardedCallbackID];
 }
 
-- (void) enableNonSkippableVideoCallbacks:(CDVInvokedUrlCommand*)command
+- (void) setNonSkippableVideoCallbacks:(CDVInvokedUrlCommand*)command
 {
     [Appodeal setNonSkippableVideoDelegate:self];
+    self.nonSkippbaleCallbackID = command.callbackId;
+    NSDictionary *vals = @{CALLBACK_EVENT: CALLBACK_INIT};
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:vals];
+    [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:self.nonSkippbaleCallbackID];
 }
 
 - (void) show:(CDVInvokedUrlCommand*)command
 {
-    if (bannerOverlap){
+    if (bannerOverlap) {
         if (([[[command arguments] objectAtIndex:0] intValue]) == 8) {
             if (bannerIsShowing)
                 [self hide:command];
@@ -324,8 +365,11 @@ int nativeShowStyleForType(int adTypes) {
         }
     }
     CDVPluginResult* pluginResult = nil;
-    [Appodeal showAd:nativeShowStyleForType((int)[[[command arguments] objectAtIndex:0] integerValue]) rootViewController:[[UIApplication sharedApplication] keyWindow].rootViewController];
-    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:YES];
+    if([Appodeal showAd:nativeShowStyleForType((int)[[[command arguments] objectAtIndex:0] integerValue]) rootViewController:[[UIApplication sharedApplication] keyWindow].rootViewController]) {
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:YES];
+    } else {
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:NO];
+    }
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
@@ -397,6 +441,19 @@ int nativeShowStyleForType(int adTypes) {
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
+- (void) canShow:(CDVInvokedUrlCommand*)command
+{
+    CDVPluginResult* pluginResult = nil;
+    
+    if([Appodeal canShowAd:nativeShowStyleForType([[[command arguments] objectAtIndex:0] intValue]) forPlacement:[[command arguments] objectAtIndex:0]])
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:YES];
+    else
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:NO];
+    
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+
 - (void) setCustomDoubleRule:(CDVInvokedUrlCommand*)command
 {
     NSString *jsonString = [[command arguments] objectAtIndex:0];
@@ -429,11 +486,6 @@ int nativeShowStyleForType(int adTypes) {
     [Appodeal setCustomRule:json];
 }
 
-- (void) confirm:(CDVInvokedUrlCommand*)command
-{
-    [Appodeal confirmUsage:nativeAdTypesForType([[[command arguments] objectAtIndex:0] intValue])];
-}
-
 - (void) setSmartBanners:(CDVInvokedUrlCommand*)command
 {
     [Appodeal setSmartBannersEnabled:[[[command arguments] objectAtIndex:0] boolValue]];
@@ -447,27 +499,6 @@ int nativeShowStyleForType(int adTypes) {
 - (void) setBannerAnimation:(CDVInvokedUrlCommand*)command
 {
     [Appodeal setBannerAnimationEnabled:[[[command arguments] objectAtIndex:0] boolValue]];
-}
-
-- (void) setUserId:(CDVInvokedUrlCommand*)command
-{
-    [Appodeal setUserId:[[command arguments] objectAtIndex:0]];
-}
-
-- (void) setEmail:(CDVInvokedUrlCommand*)command
-{
-    [Appodeal setUserEmail:[[command arguments] objectAtIndex:0]];
-}
-
-- (void) setBirthday:(CDVInvokedUrlCommand*)command
-{
-    NSString *dateString = [[command arguments] objectAtIndex:0];
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"dd-MM-yyyy"];
-    NSDate *dateFromString = [[NSDate alloc] init];
-    dateFromString = [dateFormatter dateFromString:dateString];
-    
-    [Appodeal setUserBirthday:dateFromString];
 }
 
 - (void) setAge:(CDVInvokedUrlCommand*)command
@@ -487,69 +518,7 @@ int nativeShowStyleForType(int adTypes) {
         [Appodeal setUserGender:AppodealUserGenderFemale];
 }
 
-- (void) setOccupation:(CDVInvokedUrlCommand*)command
-{
-    NSString *AppodealUserOccupation = [[command arguments] objectAtIndex:0];
-    
-    if([AppodealUserOccupation isEqualToString:@"other"])
-        [Appodeal setUserOccupation:AppodealUserOccupationOther];
-    if([AppodealUserOccupation isEqualToString:@"work"])
-        [Appodeal setUserOccupation:AppodealUserOccupationWork];
-    if([AppodealUserOccupation isEqualToString:@"school"])
-        [Appodeal setUserOccupation:AppodealUserOccupationSchool];
-    if([AppodealUserOccupation isEqualToString:@"university"])
-        [Appodeal setUserOccupation:AppodealUserOccupationUniversity];
-}
-
-- (void) setRelation:(CDVInvokedUrlCommand*)command
-{
-    NSString *AppodealUserRelationship = [[command arguments] objectAtIndex:0];
-    
-    if([AppodealUserRelationship isEqualToString:@"other"])
-        [Appodeal setUserRelationship:AppodealUserRelationshipOther];
-    if([AppodealUserRelationship isEqualToString:@"single"])
-        [Appodeal setUserRelationship:AppodealUserRelationshipSingle];
-    if([AppodealUserRelationship isEqualToString:@"dating"])
-        [Appodeal setUserRelationship:AppodealUserRelationshipDating];
-    if([AppodealUserRelationship isEqualToString:@"engaged"])
-        [Appodeal setUserRelationship:AppodealUserRelationshipEngaged];
-    if([AppodealUserRelationship isEqualToString:@"married"])
-        [Appodeal setUserRelationship:AppodealUserRelationshipMarried];
-    if([AppodealUserRelationship isEqualToString:@"searching"])
-        [Appodeal setUserRelationship:AppodealUserRelationshipSearching];
-}
-
-- (void) setSmoking:(CDVInvokedUrlCommand*)command
-{
-    NSString *AppodealUserSmokingAttitude = [[command arguments] objectAtIndex:0];
-    
-    if([AppodealUserSmokingAttitude isEqualToString:@"negative"])
-        [Appodeal setUserSmokingAttitude:AppodealUserSmokingAttitudeNegative];
-    if([AppodealUserSmokingAttitude isEqualToString:@"neutral"])
-        [Appodeal setUserSmokingAttitude:AppodealUserSmokingAttitudeNeutral];
-    if([AppodealUserSmokingAttitude isEqualToString:@"positive"])
-        [Appodeal setUserSmokingAttitude:AppodealUserSmokingAttitudePositive];
-}
-
-- (void) setAlcohol:(CDVInvokedUrlCommand*)command
-{
-    NSString *AppodealUserAlcoholAttitude = [[command arguments] objectAtIndex:0];
-    
-    if([AppodealUserAlcoholAttitude isEqualToString:@"negative"])
-        [Appodeal setUserAlcoholAttitude:AppodealUserAlcoholAttitudeNegative];
-    if([AppodealUserAlcoholAttitude isEqualToString:@"neutral"])
-        [Appodeal setUserAlcoholAttitude:AppodealUserAlcoholAttitudeNeutral];
-    if([AppodealUserAlcoholAttitude isEqualToString:@"positive"])
-        [Appodeal setUserAlcoholAttitude:AppodealUserAlcoholAttitudePositive];
-}
-
-- (void) setInterests:(CDVInvokedUrlCommand*)command
-{
-    [Appodeal setUserInterests:[[command arguments] objectAtIndex:0]];
-}
-
 //Banner overlap
-
 - (void) setBannerOverLap:(CDVInvokedUrlCommand*)command
 {
     if (![Appodeal isInitalized]) {
@@ -614,8 +583,6 @@ int nativeShowStyleForType(int adTypes) {
             [Appodeal setInterstitialDelegate:self];
         case AppodealAdTypeRewardedVideo:
             [Appodeal setRewardedVideoDelegate:self];
-        case AppodealAdTypeSkippableVideo:
-            [Appodeal setSkippableVideoDelegate:self];
         default:
             break;
     }

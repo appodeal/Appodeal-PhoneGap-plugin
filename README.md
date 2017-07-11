@@ -1,8 +1,35 @@
-#Appodeal PhoneGap Plugin
+# Appodeal PhoneGap Plugin
 
-Appodeal’s supply-side platform is designed and built by veteran publishers, for publishers. Appodeal is not an ad network, it is a new approach to monetizing for publishers. 
+This is an official Appodeal Cordova plugin, created to support Appodeal SDK with Apache Cordova.
 
-The platform is a large auction house, accompanied by a mediation layer, that exposes a publisher’s inventory to all available buyers on the market via relationships with every major ad network, RTB exchange, and DSP. Appodeal showcases publisher inventory to the advertiser, and offers the highest rate in real time. 
+## SDK
+[![](https://img.shields.io/badge/docs-here-green.svg)](appodeal.com/sdk/cordova2)
 
-[Android integration guide](http://www.appodeal.com/sdk/documentation?framework=9&full=1&platform=1) </br>
-[iOS integration guide](http://www.appodeal.com/sdk/documentation?framework=9&full=1&platform=2)
+## Install
+
+Simply go to the project folder over console/terminal and run there following command:
+
+    cordova plugin add https://github.com/appodeal/appodeal-cordova-plugin.git#cordova2
+
+Google Play Services (v9+) already included to plugin dependencies.
+
+If you have issues while installing plugin, follow the Command-line Interface Guide.
+
+Minimum OS requirements: Android API level 9 (Android OS 2.3).
+
+Android Appodeal SDK version 2.0.2
+
+iOS Appodeal SDK version 2.0.0
+
+
+## Changelog
+
+3.0.0 (14.06.2017)
+
++ Appodeal iOS SDK updated to 2.0.0
++ Appodeal Android SDK updated to 2.02
++ Appodeal.confirm removed
++ Appodeal.canShow added
++ SetOnLoadedTriggerBoth renamed to setTriggerOnLoadedOnPrecache
++ callbacks reworked, follow docs on appodeal.com/sdk/cordova2
++ optional permissions to AndroidManifest added
