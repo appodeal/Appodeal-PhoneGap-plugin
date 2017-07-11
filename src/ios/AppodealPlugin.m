@@ -1,5 +1,6 @@
 #import "AppodealPlugin.h"
 #import <UIKit/UIKit.h>
+#import <objc/runtime.h>
 
 const int INTERSTITIAL        = 1;
 const int VIDEO               = 2;
@@ -8,6 +9,17 @@ const int BANNER_BOTTOM       = 8;
 const int BANNER_TOP          = 16;
 const int REWARDED_VIDEO      = 128;
 const int NON_SKIPPABLE_VIDEO = 256;
+
+float bannerHeight = 50.f;
+float statusBarHeight = 20.f;
+
+bool bannerOverlap;
+bool bannerOverlapBottom;
+bool bannerOverlapTop;
+bool bannerIsShowing;
+bool hasStatusBarPlugin = false;
+bool isIphone;
+
 
 int nativeAdTypesForType(int adTypes) {
     int nativeAdTypes = 0;
@@ -72,174 +84,190 @@ int nativeShowStyleForType(int adTypes) {
 
 - (void)bannerDidLoadAd
 {
-    [self.webViewEngine evaluateJavaScript:@"cordova.fireDocumentEvent('onBannerLoaded')" completionHandler:nil];
+    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('onBannerLoaded')"];
 }
 
 - (void)bannerDidFailToLoadAd
 {
-    [self.webViewEngine evaluateJavaScript:@"cordova.fireDocumentEvent('onBannerFailedToLoad')" completionHandler:nil];
+    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('onBannerFailedToLoad')"];
 }
 
 - (void)bannerDidClick
 {
-    [self.webViewEngine evaluateJavaScript:@"cordova.fireDocumentEvent('onBannerClicked')" completionHandler:nil];
+    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('onBannerClicked')"];
 }
+
 
 - (void)bannerDidShow
 {
-    [self.webViewEngine evaluateJavaScript:@"cordova.fireDocumentEvent('onBannerShown')" completionHandler:nil];
+    bannerIsShowing = true;
+    if (bannerOverlap)
+        [self changeWebViewWithOverlappedBanner];
+    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('onBannerShown')"];
 }
 
 // interstitial
 - (void)interstitialDidLoadAd
 {
-    [self.webViewEngine evaluateJavaScript:@"cordova.fireDocumentEvent('onInterstitialLoaded')" completionHandler:nil];
+    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('onInterstitialLoaded')"];
 }
 
 - (void)interstitialDidFailToLoadAd
 {
-    [self.webViewEngine evaluateJavaScript:@"cordova.fireDocumentEvent('onInterstitialFailedToLoad')" completionHandler:nil];
+    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('onInterstitialFailedToLoad')"];
 }
 
 - (void)interstitialWillPresent
 {
-    [self.webViewEngine evaluateJavaScript:@"cordova.fireDocumentEvent('onInterstitialShown')" completionHandler:nil];
+    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('onInterstitialShown')"];
 }
 
 - (void)interstitialDidDismiss
 {
-    [self.webViewEngine evaluateJavaScript:@"cordova.fireDocumentEvent('onInterstitialClosed')" completionHandler:nil];
+    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('onInterstitialClosed')"];
 }
 
 - (void)interstitialDidClick
 {
-    [self.webViewEngine evaluateJavaScript:@"cordova.fireDocumentEvent('onInterstitialClicked')" completionHandler:nil];
+    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('onInterstitialClicked')"];
 }
 
 // rewarded video
 - (void)rewardedVideoDidLoadAd
 {
-    [self.webViewEngine evaluateJavaScript:@"cordova.fireDocumentEvent('onRewardedVideoLoaded')" completionHandler:nil];
+    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('onRewardedVideoLoaded')"];
 }
 
 - (void)rewardedVideoDidFailToLoadAd
 {
-    [self.webViewEngine evaluateJavaScript:@"cordova.fireDocumentEvent('onRewardedVideoFailedToLoad')" completionHandler:nil];
+    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('onRewardedVideoFailedToLoad')"];
 }
 
 - (void)rewardedVideoDidPresent
 {
-    [self.webViewEngine evaluateJavaScript:@"cordova.fireDocumentEvent('onRewardedVideoShown')" completionHandler:nil];
+    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('onRewardedVideoShown')"];
 }
 
 - (void)rewardedVideoWillDismiss
 {
-    [self.webViewEngine evaluateJavaScript:@"cordova.fireDocumentEvent('onRewardedVideoClosed')" completionHandler:nil];
+    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('onRewardedVideoClosed')"];
 }
 
 - (void)rewardedVideoDidFinish:(NSUInteger)rewardAmount name:(NSString *)rewardName
 {
     NSString* script = [NSString stringWithFormat:@"cordova.fireDocumentEvent('onRewardedVideoFinished', { amount: %lu, name: '%@' })", rewardAmount, rewardName];
-    [self.webViewEngine evaluateJavaScript:script completionHandler:nil];
+    [self.commandDelegate evalJs:script];
 }
 
 - (void)rewardedVideoDidClick
 {
-    [self.webViewEngine evaluateJavaScript:@"cordova.fireDocumentEvent('onRewardedVideoClicked')" completionHandler:nil];
+    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('onRewardedVideoClicked')"];
 }
 
 // non skippable video
 - (void)nonSkippableVideoDidLoadAd
 {
-    [self.webViewEngine evaluateJavaScript:@"cordova.fireDocumentEvent('onNonSkippableVideoLoaded')" completionHandler:nil];
+    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('onNonSkippableVideoLoaded')"];
 }
 
 - (void)nonSkippableVideoDidFailToLoadAd
 {
-    [self.webViewEngine evaluateJavaScript:@"cordova.fireDocumentEvent('onNonSkippableVideoFailedToLoad')" completionHandler:nil];
+    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('onNonSkippableVideoFailedToLoad')"];
 }
 
 - (void)nonSkippableVideoDidPresent
 {
-    [self.webViewEngine evaluateJavaScript:@"cordova.fireDocumentEvent('onNonSkippableVideoShown')" completionHandler:nil];
+    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('onNonSkippableVideoShown')"];
 }
 
 - (void)nonSkippableVideoWillDismiss
 {
-    [self.webViewEngine evaluateJavaScript:@"cordova.fireDocumentEvent('onNonSkippableVideoClosed')" completionHandler:nil];
+    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('onNonSkippableVideoClosed')"];
 }
 
 - (void)nonSkippableVideoDidFinish
 {
-    [self.webViewEngine evaluateJavaScript:@"cordova.fireDocumentEvent('onNonSkippableVideoFinished')" completionHandler:nil];
+    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('onNonSkippableVideoFinished')"];
 }
 
 - (void)nonSkippableVideoDidClick
 {
-    [self.webViewEngine evaluateJavaScript:@"cordova.fireDocumentEvent('onNonSkippableVideoClicked')" completionHandler:nil];
+    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('onNonSkippableVideoClicked')"];
 }
 
 // skippable video
 - (void)skippableVideoDidLoadAd
 {
-    [self.webViewEngine evaluateJavaScript:@"cordova.fireDocumentEvent('onSkippableVideoLoaded')" completionHandler:nil];
+    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('onSkippableVideoLoaded')"];
 }
 
 - (void)skippableVideoDidFailToLoadAd
 {
-    [self.webViewEngine evaluateJavaScript:@"cordova.fireDocumentEvent('onSkippableVideoFailedToLoad')" completionHandler:nil];
+    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('onSkippableVideoFailedToLoad')"];
 }
 
 - (void)skippableVideoDidPresent
 {
-    [self.webViewEngine evaluateJavaScript:@"cordova.fireDocumentEvent('onSkippableVideoShown')" completionHandler:nil];
+    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('onSkippableVideoShown')"];
 }
 
 - (void)skippableVideoWillDismiss
 {
-    [self.webViewEngine evaluateJavaScript:@"cordova.fireDocumentEvent('onSkippableVideoClosed')" completionHandler:nil];
+    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('onSkippableVideoClosed')"];
 }
 
 - (void)skippableVideoDidFinish
 {
-    [self.webViewEngine evaluateJavaScript:@"cordova.fireDocumentEvent('onSkippableVideoFinished')" completionHandler:nil];
+    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('onSkippableVideoFinished')"];
 }
 
 - (void)skippableVideoDidClick
 {
-    [self.webViewEngine evaluateJavaScript:@"cordova.fireDocumentEvent('onSkippableVideoClicked')" completionHandler:nil];
+    [self.commandDelegate evalJs:@"cordova.fireDocumentEvent('onSkippableVideoClicked')"];
 }
 
 - (void) disableNetworkType:(CDVInvokedUrlCommand*)command
 {
-    [Appodeal disableNetworkForAdType:nativeAdTypesForType([[[command arguments] objectAtIndex:1] integerValue]) name:[[command arguments] objectAtIndex:0]];
+    [Appodeal disableNetworkForAdType:nativeAdTypesForType([[[command arguments] objectAtIndex:1] intValue]) name:[[command arguments] objectAtIndex:0]];
 }
 
 - (void) disableLocationPermissionCheck:(CDVInvokedUrlCommand*)command
 {
-    [Appodeal disableLocationPermissionCheck];
+    [Appodeal setLocationTracking:NO];
 }
 
 - (void) setAutoCache:(CDVInvokedUrlCommand*)command
 {
-    [Appodeal setAutocache:[[[command arguments] objectAtIndex:1] boolValue] types:nativeAdTypesForType([[[command arguments] objectAtIndex:0] integerValue])];
+    [Appodeal setAutocache:[[[command arguments] objectAtIndex:1] boolValue] types:nativeAdTypesForType([[[command arguments] objectAtIndex:0] intValue])];
 }
 
 - (void) isPrecache:(CDVInvokedUrlCommand*)command
 {
     CDVPluginResult* pluginResult = nil;
     
-    if([Appodeal isAutocacheEnabled:nativeAdTypesForType([[[command arguments] objectAtIndex:0] integerValue])])
-    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:YES];
+    if([Appodeal isAutocacheEnabled:nativeAdTypesForType([[[command arguments] objectAtIndex:0] intValue])])
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:YES];
     else
-    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:NO];
-    
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:NO];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void) initialize:(CDVInvokedUrlCommand*)command
 {
-    [Appodeal initializeWithApiKey:[[command arguments] objectAtIndex:0] types:nativeAdTypesForType([[[command arguments] objectAtIndex:1] integerValue])];
+    if (![Appodeal isInitalized])
+    {
+        [Appodeal setFramework:APDFrameworkCordova];
+        if ([[[command arguments] objectAtIndex:1] intValue] & BANNER) {
+            if (bannerOverlap) {
+                [self setDelegateOnOverlap:(AppodealAdType)nativeAdTypesForType([[[command arguments] objectAtIndex:1] intValue])];
+            }
+            [self detectStatusBarPlugin];
+            bannerHeight = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? 90.f : 50.f);
+            isIphone = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? false : true);
+        }
+        [Appodeal initializeWithApiKey:[[command arguments] objectAtIndex:0] types:nativeAdTypesForType ([[[command arguments] objectAtIndex:1] intValue])];
+        
+    }
 }
 
 - (void) isInitalized:(CDVInvokedUrlCommand*)command
@@ -247,9 +275,9 @@ int nativeShowStyleForType(int adTypes) {
     CDVPluginResult* pluginResult = nil;
     
     if([Appodeal isInitalized])
-    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:YES];
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:YES];
     else
-    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:NO];
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:NO];
     
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
@@ -281,36 +309,63 @@ int nativeShowStyleForType(int adTypes) {
 
 - (void) show:(CDVInvokedUrlCommand*)command
 {
+    if (bannerOverlap){
+        if (([[[command arguments] objectAtIndex:0] intValue]) == 8) {
+            if (bannerIsShowing)
+                [self hide:command];
+            bannerOverlapBottom = true;
+            bannerOverlapTop = false;
+        }
+        else if (([[[command arguments] objectAtIndex:0] intValue]) == 16) {
+            if (bannerIsShowing)
+                [self hide:command];
+            bannerOverlapBottom = false;
+            bannerOverlapTop = true;
+        }
+    }
     CDVPluginResult* pluginResult = nil;
-    
-    if([Appodeal showAd:nativeShowStyleForType([[[command arguments] objectAtIndex:0] integerValue]) rootViewController:[[UIApplication sharedApplication] keyWindow].rootViewController])
+    [Appodeal showAd:nativeShowStyleForType((int)[[[command arguments] objectAtIndex:0] integerValue]) rootViewController:[[UIApplication sharedApplication] keyWindow].rootViewController];
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:YES];
-    else
-    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:NO];
-    
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void) showWithPlacement:(CDVInvokedUrlCommand*)command
 {
+    if (bannerOverlap){
+        if (([[[command arguments] objectAtIndex:0] intValue]) == 8) {
+            if (bannerIsShowing)
+                [self hide:command];
+            bannerOverlapBottom = true;
+            bannerOverlapTop = false;
+        }
+        else if (([[[command arguments] objectAtIndex:0] intValue]) == 16) {
+            if (bannerIsShowing)
+                [self hide:command];
+            bannerOverlapBottom = false;
+            bannerOverlapTop = true;
+        }
+    }
     CDVPluginResult* pluginResult = nil;
-    
-    if([Appodeal showAd:nativeShowStyleForType([[[command arguments] objectAtIndex:0] integerValue]) forPlacement:[[command arguments] objectAtIndex:1] rootViewController:[[UIApplication sharedApplication] keyWindow].rootViewController])
-    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:YES];
+    if([Appodeal showAd:nativeShowStyleForType((int)[[[command arguments] objectAtIndex:0] intValue]) forPlacement:[[command arguments] objectAtIndex:1] rootViewController:[[UIApplication sharedApplication] keyWindow].rootViewController])
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:YES];
     else
-    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:NO];
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:NO];
     
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 - (void) cache:(CDVInvokedUrlCommand*)command
 {
-    [Appodeal cacheAd:nativeAdTypesForType([[[command arguments] objectAtIndex:0] integerValue])];
+    [Appodeal cacheAd:nativeAdTypesForType([[[command arguments] objectAtIndex:0] intValue])];
 }
 
 - (void) hide:(CDVInvokedUrlCommand*)command
 {
     [Appodeal hideBanner];
+    if (bannerOverlap && bannerIsShowing) {
+        [self returnNativeSize];
+    }
+    bannerIsShowing = false;
 }
 
 - (void) setLogging:(CDVInvokedUrlCommand*)command
@@ -321,11 +376,6 @@ int nativeShowStyleForType(int adTypes) {
 - (void) setTesting:(CDVInvokedUrlCommand*)command
 {
     [Appodeal setTestingEnabled:[[[command arguments] objectAtIndex:0] boolValue]];
-}
-
-- (void) resetUUID:(CDVInvokedUrlCommand*)command
-{
-    [Appodeal resetUUID];
 }
 
 - (void) getVersion:(CDVInvokedUrlCommand*)command
@@ -339,10 +389,10 @@ int nativeShowStyleForType(int adTypes) {
 {
     CDVPluginResult* pluginResult = nil;
     
-    if([Appodeal isReadyForShowWithStyle:nativeShowStyleForType([[[command arguments] objectAtIndex:0] integerValue])])
-    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:YES];
+    if([Appodeal isReadyForShowWithStyle:nativeShowStyleForType([[[command arguments] objectAtIndex:0] intValue])])
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:YES];
     else
-    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:NO];
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:NO];
     
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
@@ -381,7 +431,7 @@ int nativeShowStyleForType(int adTypes) {
 
 - (void) confirm:(CDVInvokedUrlCommand*)command
 {
-    [Appodeal confirmUsage:nativeAdTypesForType([[[command arguments] objectAtIndex:0] integerValue])];
+    [Appodeal confirmUsage:nativeAdTypesForType([[[command arguments] objectAtIndex:0] intValue])];
 }
 
 - (void) setSmartBanners:(CDVInvokedUrlCommand*)command
@@ -430,11 +480,11 @@ int nativeShowStyleForType(int adTypes) {
     NSString *AppodealUserGender = [[command arguments] objectAtIndex:0];
     
     if([AppodealUserGender isEqualToString:@"other"])
-    [Appodeal setUserGender:AppodealUserGenderOther];
+        [Appodeal setUserGender:AppodealUserGenderOther];
     if([AppodealUserGender isEqualToString:@"male"])
-    [Appodeal setUserGender:AppodealUserGenderMale];
+        [Appodeal setUserGender:AppodealUserGenderMale];
     if([AppodealUserGender isEqualToString:@"female"])
-    [Appodeal setUserGender:AppodealUserGenderFemale];
+        [Appodeal setUserGender:AppodealUserGenderFemale];
 }
 
 - (void) setOccupation:(CDVInvokedUrlCommand*)command
@@ -442,13 +492,13 @@ int nativeShowStyleForType(int adTypes) {
     NSString *AppodealUserOccupation = [[command arguments] objectAtIndex:0];
     
     if([AppodealUserOccupation isEqualToString:@"other"])
-    [Appodeal setUserOccupation:AppodealUserOccupationOther];
+        [Appodeal setUserOccupation:AppodealUserOccupationOther];
     if([AppodealUserOccupation isEqualToString:@"work"])
-    [Appodeal setUserOccupation:AppodealUserOccupationWork];
+        [Appodeal setUserOccupation:AppodealUserOccupationWork];
     if([AppodealUserOccupation isEqualToString:@"school"])
-    [Appodeal setUserOccupation:AppodealUserOccupationSchool];
+        [Appodeal setUserOccupation:AppodealUserOccupationSchool];
     if([AppodealUserOccupation isEqualToString:@"university"])
-    [Appodeal setUserOccupation:AppodealUserOccupationUniversity];
+        [Appodeal setUserOccupation:AppodealUserOccupationUniversity];
 }
 
 - (void) setRelation:(CDVInvokedUrlCommand*)command
@@ -456,17 +506,17 @@ int nativeShowStyleForType(int adTypes) {
     NSString *AppodealUserRelationship = [[command arguments] objectAtIndex:0];
     
     if([AppodealUserRelationship isEqualToString:@"other"])
-    [Appodeal setUserRelationship:AppodealUserRelationshipOther];
+        [Appodeal setUserRelationship:AppodealUserRelationshipOther];
     if([AppodealUserRelationship isEqualToString:@"single"])
-    [Appodeal setUserRelationship:AppodealUserRelationshipSingle];
+        [Appodeal setUserRelationship:AppodealUserRelationshipSingle];
     if([AppodealUserRelationship isEqualToString:@"dating"])
-    [Appodeal setUserRelationship:AppodealUserRelationshipDating];
+        [Appodeal setUserRelationship:AppodealUserRelationshipDating];
     if([AppodealUserRelationship isEqualToString:@"engaged"])
-    [Appodeal setUserRelationship:AppodealUserRelationshipEngaged];
+        [Appodeal setUserRelationship:AppodealUserRelationshipEngaged];
     if([AppodealUserRelationship isEqualToString:@"married"])
-    [Appodeal setUserRelationship:AppodealUserRelationshipMarried];
+        [Appodeal setUserRelationship:AppodealUserRelationshipMarried];
     if([AppodealUserRelationship isEqualToString:@"searching"])
-    [Appodeal setUserRelationship:AppodealUserRelationshipSearching];
+        [Appodeal setUserRelationship:AppodealUserRelationshipSearching];
 }
 
 - (void) setSmoking:(CDVInvokedUrlCommand*)command
@@ -474,11 +524,11 @@ int nativeShowStyleForType(int adTypes) {
     NSString *AppodealUserSmokingAttitude = [[command arguments] objectAtIndex:0];
     
     if([AppodealUserSmokingAttitude isEqualToString:@"negative"])
-    [Appodeal setUserSmokingAttitude:AppodealUserSmokingAttitudeNegative];
+        [Appodeal setUserSmokingAttitude:AppodealUserSmokingAttitudeNegative];
     if([AppodealUserSmokingAttitude isEqualToString:@"neutral"])
-    [Appodeal setUserSmokingAttitude:AppodealUserSmokingAttitudeNeutral];
+        [Appodeal setUserSmokingAttitude:AppodealUserSmokingAttitudeNeutral];
     if([AppodealUserSmokingAttitude isEqualToString:@"positive"])
-    [Appodeal setUserSmokingAttitude:AppodealUserSmokingAttitudePositive];
+        [Appodeal setUserSmokingAttitude:AppodealUserSmokingAttitudePositive];
 }
 
 - (void) setAlcohol:(CDVInvokedUrlCommand*)command
@@ -486,16 +536,111 @@ int nativeShowStyleForType(int adTypes) {
     NSString *AppodealUserAlcoholAttitude = [[command arguments] objectAtIndex:0];
     
     if([AppodealUserAlcoholAttitude isEqualToString:@"negative"])
-    [Appodeal setUserAlcoholAttitude:AppodealUserAlcoholAttitudeNegative];
+        [Appodeal setUserAlcoholAttitude:AppodealUserAlcoholAttitudeNegative];
     if([AppodealUserAlcoholAttitude isEqualToString:@"neutral"])
-    [Appodeal setUserAlcoholAttitude:AppodealUserAlcoholAttitudeNeutral];
+        [Appodeal setUserAlcoholAttitude:AppodealUserAlcoholAttitudeNeutral];
     if([AppodealUserAlcoholAttitude isEqualToString:@"positive"])
-    [Appodeal setUserAlcoholAttitude:AppodealUserAlcoholAttitudePositive];
+        [Appodeal setUserAlcoholAttitude:AppodealUserAlcoholAttitudePositive];
 }
 
 - (void) setInterests:(CDVInvokedUrlCommand*)command
 {
     [Appodeal setUserInterests:[[command arguments] objectAtIndex:0]];
+}
+
+//Banner overlap
+
+- (void) setBannerOverLap:(CDVInvokedUrlCommand*)command
+{
+    if (![Appodeal isInitalized]) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(statusBarDidChangeFrame:) name: UIApplicationDidChangeStatusBarFrameNotification object:nil];
+            bannerOverlap = [[[command arguments] objectAtIndex:0] boolValue];
+        if (hasStatusBarPlugin) {
+            bannerOverlap = false;
+        }
+    }
+}
+
+- (void) returnNativeSize {
+    CGRect bounds = [self.viewController.view.window bounds];
+    if (CGRectEqualToRect(bounds, CGRectZero)) {
+        bounds = [[UIScreen mainScreen] bounds];
+    }
+    if (CGRectEqualToRect(bounds, CGRectZero)) {
+        bounds = [self.viewController.view bounds];
+    }
+    self.viewController.view.frame = bounds;
+    [self.webView setFrame:bounds];
+}
+
+- (void) changeWebViewWithOverlappedBanner {
+    CGRect bounds = [self.viewController.view.window bounds];
+    if (CGRectEqualToRect(bounds, CGRectZero)) {
+        bounds = [[UIScreen mainScreen] bounds];
+    }
+    if (CGRectEqualToRect(bounds, CGRectZero)) {
+        bounds = [self.viewController.view bounds];
+    }
+    self.viewController.view.frame = bounds;
+    if (hasStatusBarPlugin){
+        statusBarHeight = 20.f;
+    }
+    else {
+        if (isIphone && UIInterfaceOrientationIsLandscape([[UIApplication sharedApplication] statusBarOrientation]))
+            statusBarHeight = 0.f;
+        else
+            statusBarHeight = 20.f;
+    }
+    
+    if (bannerOverlapTop) {
+        [self.webView setFrame:CGRectMake(bounds.origin.x, bounds.origin.y + bannerHeight + statusBarHeight, bounds.size.width, bounds.size.height - bannerHeight - statusBarHeight)];
+    }
+    else if (bannerOverlapBottom) {
+        [self.webView setFrame:CGRectMake(bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height - bannerHeight)];
+    }
+}
+
+- (void) statusBarDidChangeFrame:(NSNotification *)note
+{
+    if (bannerOverlap && bannerIsShowing)
+        [self changeWebViewWithOverlappedBanner];
+}
+
+- (void) setDelegateOnOverlap:(AppodealAdType) types {
+    switch (types) {
+        case AppodealAdTypeBanner:
+            [Appodeal setBannerDelegate:self];
+        case AppodealAdTypeInterstitial:
+            [Appodeal setInterstitialDelegate:self];
+        case AppodealAdTypeRewardedVideo:
+            [Appodeal setRewardedVideoDelegate:self];
+        case AppodealAdTypeSkippableVideo:
+            [Appodeal setSkippableVideoDelegate:self];
+        default:
+            break;
+    }
+}
+
+- (void)detectStatusBarPlugin {
+    int numClasses;
+    Class * classes = NULL;
+    classes = NULL;
+    numClasses = objc_getClassList(NULL, 0);
+    
+    if (numClasses > 0 )
+    {
+        classes = (__unsafe_unretained Class *)malloc(sizeof(Class) * numClasses);
+        numClasses = objc_getClassList(classes, numClasses);
+        for (int i = 0; i < numClasses; i++) {
+            Class c = classes[i];
+            NSString * className = NSStringFromClass(c);
+            
+            if ([className hasPrefix:@"CDVStatusBar"]) {
+                hasStatusBarPlugin = true;
+            }
+        }
+        free(classes);
+    }
 }
 
 @end
