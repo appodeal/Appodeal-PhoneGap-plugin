@@ -210,7 +210,6 @@
         </config-file>
         <source-file src="src/android/AppodealPlugin.java" target-dir="src/com/appodeal/plugin" />
         <source-file src="libs/Android/appodeal-2.0.2.jar" target-dir="libs" />
-        <source-file src="libs/Android/facebook-audience-network-4.22.0.jar" target-dir="libs" />
         <source-file src="libs/Android/inmobi-6.1.1.jar" target-dir="libs" />
         <source-file src="libs/Android/picasso-2.5.2.jar" target-dir="libs" />
         <source-file src="libs/Android/presage-lib-1.8.5.jar" target-dir="libs" />
