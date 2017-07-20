@@ -84,6 +84,7 @@ int nativeShowStyleForType(int adTypes) {
 
 - (void)bannerDidLoadAdIsPrecache:(BOOL)precache
 {
+    NSLog(@"AppodealCordova, bannerDidLoadAdIsPrecache");
     NSDictionary *vals = @{CALLBACK_EVENT: CALLBACK_LOADED, @"isPrecache": [NSNumber numberWithBool:precache], @"height": @"0"};
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:vals];
     [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
@@ -92,6 +93,7 @@ int nativeShowStyleForType(int adTypes) {
 
 - (void)bannerDidFailToLoadAd
 {
+    NSLog(@"AppodealCordova, bannerDidFailToLoadAd");
     NSDictionary *vals = @{CALLBACK_EVENT: CALLBACK_FAILED};
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:vals];
     [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
@@ -100,6 +102,7 @@ int nativeShowStyleForType(int adTypes) {
 
 - (void)bannerDidClick
 {
+    NSLog(@"AppodealCordova, bannerDidClick");
     NSDictionary *vals = @{CALLBACK_EVENT: CALLBACK_CLICKED};
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:vals];
     [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
@@ -109,6 +112,7 @@ int nativeShowStyleForType(int adTypes) {
 
 - (void)bannerDidShow
 {
+    NSLog(@"AppodealCordova, bannerDidShow");
     bannerIsShowing = true;
     if (bannerOverlap)
         [self changeWebViewWithOverlappedBanner];
@@ -122,6 +126,7 @@ int nativeShowStyleForType(int adTypes) {
 // interstitial
 - (void)interstitialDidLoadAdisPrecache:(BOOL)precache
 {
+    NSLog(@"AppodealCordova, interstitialDidLoadAdisPrecache");
     NSDictionary *vals = @{CALLBACK_EVENT: CALLBACK_LOADED, @"isPrecache": [NSNumber numberWithBool:precache]};
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:vals];
     [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
@@ -130,6 +135,7 @@ int nativeShowStyleForType(int adTypes) {
 
 - (void)interstitialDidFailToLoadAd
 {
+    NSLog(@"AppodealCordova, interstitialDidFailToLoadAd");
     NSDictionary *vals = @{CALLBACK_EVENT: CALLBACK_FAILED};
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:vals];
     [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
@@ -138,6 +144,7 @@ int nativeShowStyleForType(int adTypes) {
 
 - (void)interstitialWillPresent
 {
+    NSLog(@"AppodealCordova, interstitialWillPresent");
     NSDictionary *vals = @{CALLBACK_EVENT: CALLBACK_SHOWN};
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:vals];
     [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
@@ -146,6 +153,7 @@ int nativeShowStyleForType(int adTypes) {
 
 - (void)interstitialDidDismiss
 {
+    NSLog(@"AppodealCordova, interstitialDidDismiss");
     NSDictionary *vals = @{CALLBACK_EVENT: CALLBACK_CLOSED};
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:vals];
     [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
@@ -154,6 +162,7 @@ int nativeShowStyleForType(int adTypes) {
 
 - (void)interstitialDidClick
 {
+    NSLog(@"AppodealCordova, interstitialDidClick");
     NSDictionary *vals = @{CALLBACK_EVENT: CALLBACK_CLICKED};
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:vals];
     [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
@@ -163,6 +172,7 @@ int nativeShowStyleForType(int adTypes) {
 // rewarded video
 - (void)rewardedVideoDidLoadAd
 {
+    NSLog(@"AppodealCordova, rewardedVideoDidLoadAd");
     NSDictionary *vals = @{CALLBACK_EVENT: CALLBACK_LOADED};
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:vals];
     [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
@@ -171,6 +181,7 @@ int nativeShowStyleForType(int adTypes) {
 
 - (void)rewardedVideoDidFailToLoadAd
 {
+    NSLog(@"AppodealCordova, rewardedVideoDidFailToLoadAd");
     NSDictionary *vals = @{CALLBACK_EVENT: CALLBACK_FAILED};
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:vals];
     [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
@@ -179,6 +190,8 @@ int nativeShowStyleForType(int adTypes) {
 
 - (void)rewardedVideoDidPresent
 {
+    NSLog(@"AppodealCordova, rewardedVideoDidPresent");
+    
     isRewardedFinished = NO;
     
     NSDictionary *vals = @{CALLBACK_EVENT: CALLBACK_SHOWN};
@@ -189,6 +202,7 @@ int nativeShowStyleForType(int adTypes) {
 
 - (void)rewardedVideoWillDismiss
 {
+    NSLog(@"AppodealCordova, rewardedVideoWillDismiss");
     NSDictionary *vals = @{CALLBACK_EVENT: CALLBACK_CLOSED, @"finished": [NSNumber numberWithBool:isRewardedFinished]};
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:vals];
     [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
@@ -197,6 +211,8 @@ int nativeShowStyleForType(int adTypes) {
 
 - (void)rewardedVideoDidFinish:(NSUInteger)rewardAmount name:(NSString *)rewardName
 {
+    NSLog(@"AppodealCordova, rewardedVideoDidFinish");
+    
     isRewardedFinished = YES;
     
     NSMutableDictionary * rewardDict = [NSMutableDictionary new];
@@ -213,6 +229,8 @@ int nativeShowStyleForType(int adTypes) {
 // non skippable video
 - (void)nonSkippableVideoDidLoadAd
 {
+    NSLog(@"AppodealCordova, nonSkippableVideoDidLoadAd");
+    
     NSDictionary *vals = @{CALLBACK_EVENT: CALLBACK_LOADED};
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:vals];
     [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
@@ -221,6 +239,7 @@ int nativeShowStyleForType(int adTypes) {
 
 - (void)nonSkippableVideoDidFailToLoadAd
 {
+    NSLog(@"AppodealCordova, nonSkippableVideoDidFailToLoadAd");
     NSDictionary *vals = @{CALLBACK_EVENT: CALLBACK_FAILED};
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:vals];
     [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
@@ -230,7 +249,7 @@ int nativeShowStyleForType(int adTypes) {
 - (void)nonSkippableVideoDidPresent
 {
     isNonSkippableFinished = NO;
-    
+    NSLog(@"AppodealCordova, nonSkippableVideoDidPresent");
     NSDictionary *vals = @{CALLBACK_EVENT: CALLBACK_SHOWN};
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:vals];
     [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
@@ -239,6 +258,7 @@ int nativeShowStyleForType(int adTypes) {
 
 - (void)nonSkippableVideoWillDismiss
 {
+    NSLog(@"AppodealCordova, nonSkippableVideoWillDismiss");
     NSDictionary *vals = @{CALLBACK_EVENT: CALLBACK_CLOSED, @"finished": [NSNumber numberWithBool:isNonSkippableFinished]};
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:vals];
     [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
@@ -247,6 +267,7 @@ int nativeShowStyleForType(int adTypes) {
 
 - (void)nonSkippableVideoDidFinish
 {
+    NSLog(@"AppodealCordova, nonSkippableVideoDidFinish");
     isNonSkippableFinished = YES;
     
     NSDictionary *vals = @{CALLBACK_EVENT: CALLBACK_FINISHED};
@@ -258,21 +279,25 @@ int nativeShowStyleForType(int adTypes) {
 
 - (void) disableNetworkType:(CDVInvokedUrlCommand*)command
 {
+    NSLog(@"AppodealCordova, disableNetworkType");
     [Appodeal disableNetworkForAdType:nativeAdTypesForType([[[command arguments] objectAtIndex:1] intValue]) name:[[command arguments] objectAtIndex:0]];
 }
 
 - (void) disableLocationPermissionCheck:(CDVInvokedUrlCommand*)command
 {
+    NSLog(@"AppodealCordova, disableLocationPermissionCheck");
     [Appodeal setLocationTracking:NO];
 }
 
 - (void) setAutoCache:(CDVInvokedUrlCommand*)command
 {
+    NSLog(@"AppodealCordova, setAutoCache for adType: %@ with value: %@", [[command arguments] objectAtIndex:0], [[command arguments] objectAtIndex:1]);
     [Appodeal setAutocache:[[[command arguments] objectAtIndex:1] boolValue] types:nativeAdTypesForType([[[command arguments] objectAtIndex:0] intValue])];
 }
 
 - (void) isPrecache:(CDVInvokedUrlCommand*)command
 {
+    NSLog(@"AppodealCordova, isPrecache for adType: %@", [[command arguments] objectAtIndex:0]);
     CDVPluginResult* pluginResult = nil;
     
     if([Appodeal isAutocacheEnabled:nativeAdTypesForType([[[command arguments] objectAtIndex:0] intValue])])
@@ -284,6 +309,7 @@ int nativeShowStyleForType(int adTypes) {
 
 - (void) initialize:(CDVInvokedUrlCommand*)command
 {
+    NSLog(@"AppodealCordova, initialize with key: %@, for adType: %@", [[command arguments] objectAtIndex:0], [[command arguments] objectAtIndex:1]);
     [Appodeal setFramework:APDFrameworkCordova];
     if ([[[command arguments] objectAtIndex:1] intValue] & BANNER) {
         if (bannerOverlap) {
@@ -293,11 +319,13 @@ int nativeShowStyleForType(int adTypes) {
         bannerHeight = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? 90.f : 50.f);
         isIphone = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? false : true);
     }
-    [Appodeal initializeWithApiKey:[[command arguments] objectAtIndex:0] types:nativeAdTypesForType ([[[command arguments] objectAtIndex:1] intValue])];    
+    [Appodeal initializeWithApiKey:[[command arguments] objectAtIndex:0] types:nativeAdTypesForType ([[[command arguments] objectAtIndex:1] intValue])];
 }
 
 - (void) isInitalized:(CDVInvokedUrlCommand*)command
 {
+    NSLog(@"AppodealCordova, isInitalized");
+    
     CDVPluginResult* pluginResult = nil;
     
     if([Appodeal isInitalized])
@@ -310,6 +338,7 @@ int nativeShowStyleForType(int adTypes) {
 
 - (void) setInterstitialCallbacks:(CDVInvokedUrlCommand*)command
 {
+    NSLog(@"AppodealCordova, setInterstitialCallbacks");
     [Appodeal setInterstitialDelegate:self];
     self.interstitialCallbackID = command.callbackId;
     NSDictionary *vals = @{CALLBACK_EVENT: CALLBACK_INIT};
@@ -320,6 +349,7 @@ int nativeShowStyleForType(int adTypes) {
 
 - (void) setBannerCallbacks:(CDVInvokedUrlCommand*)command
 {
+    NSLog(@"AppodealCordova, setBannerCallbacks");
     [Appodeal setBannerDelegate:self];
     self.bannerCallbackID = command.callbackId;
     NSDictionary *vals = @{CALLBACK_EVENT: CALLBACK_INIT};
@@ -330,6 +360,7 @@ int nativeShowStyleForType(int adTypes) {
 
 - (void) setRewardedVideoCallbacks:(CDVInvokedUrlCommand*)command
 {
+    NSLog(@"AppodealCordova, setRewardedVideoCallbacks");
     [Appodeal setRewardedVideoDelegate:self];
     self.rewardedCallbackID = command.callbackId;
     NSDictionary *vals = @{CALLBACK_EVENT: CALLBACK_INIT};
@@ -340,6 +371,7 @@ int nativeShowStyleForType(int adTypes) {
 
 - (void) setNonSkippableVideoCallbacks:(CDVInvokedUrlCommand*)command
 {
+    NSLog(@"AppodealCordova, setInterstitialCallbacks");
     [Appodeal setNonSkippableVideoDelegate:self];
     self.nonSkippbaleCallbackID = command.callbackId;
     NSDictionary *vals = @{CALLBACK_EVENT: CALLBACK_INIT};
@@ -350,6 +382,7 @@ int nativeShowStyleForType(int adTypes) {
 
 - (void) show:(CDVInvokedUrlCommand*)command
 {
+    NSLog(@"AppodealCordova, show for adType: %@", [[command arguments] objectAtIndex:0]);
     if (bannerOverlap) {
         if (([[[command arguments] objectAtIndex:0] intValue]) == 8) {
             if (bannerIsShowing)
@@ -375,6 +408,7 @@ int nativeShowStyleForType(int adTypes) {
 
 - (void) showWithPlacement:(CDVInvokedUrlCommand*)command
 {
+    NSLog(@"AppodealCordova, showWithPlacement for adType: %@ with placement: %@", [[command arguments] objectAtIndex:0], [[command arguments] objectAtIndex:1]);
     if (bannerOverlap){
         if (([[[command arguments] objectAtIndex:0] intValue]) == 8) {
             if (bannerIsShowing)
@@ -400,11 +434,13 @@ int nativeShowStyleForType(int adTypes) {
 
 - (void) cache:(CDVInvokedUrlCommand*)command
 {
+    NSLog(@"AppodealCordova, cache for adType: %@", [[command arguments] objectAtIndex:0]);
     [Appodeal cacheAd:nativeAdTypesForType([[[command arguments] objectAtIndex:0] intValue])];
 }
 
 - (void) hide:(CDVInvokedUrlCommand*)command
 {
+    NSLog(@"AppodealCordova, hideBanner");
     [Appodeal hideBanner];
     if (bannerOverlap && bannerIsShowing) {
         [self returnNativeSize];
@@ -414,16 +450,19 @@ int nativeShowStyleForType(int adTypes) {
 
 - (void) setLogging:(CDVInvokedUrlCommand*)command
 {
+    NSLog(@"AppodealCordova, setLogging to: %@", [[command arguments] objectAtIndex:0]);
     [Appodeal setDebugEnabled:[[[command arguments] objectAtIndex:0] boolValue]];
 }
 
 - (void) setTesting:(CDVInvokedUrlCommand*)command
 {
+    NSLog(@"AppodealCordova, setTesting to: %@", [[command arguments] objectAtIndex:0]);
     [Appodeal setTestingEnabled:[[[command arguments] objectAtIndex:0] boolValue]];
 }
 
 - (void) getVersion:(CDVInvokedUrlCommand*)command
 {
+    NSLog(@"AppodealCordova, getVersion");
     CDVPluginResult* pluginResult = nil;
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[Appodeal getVersion]];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
@@ -431,6 +470,8 @@ int nativeShowStyleForType(int adTypes) {
 
 - (void) isLoaded:(CDVInvokedUrlCommand*)command
 {
+    NSLog(@"AppodealCordova, isLoaded for adType: %@", [[command arguments] objectAtIndex:0]);
+    
     CDVPluginResult* pluginResult = nil;
     
     if([Appodeal isReadyForShowWithStyle:nativeShowStyleForType([[[command arguments] objectAtIndex:0] intValue])])
@@ -443,6 +484,7 @@ int nativeShowStyleForType(int adTypes) {
 
 - (void) canShow:(CDVInvokedUrlCommand*)command
 {
+    NSLog(@"AppodealCordova, canShow for adType: %@, placement: %@", [[command arguments] objectAtIndex:0], [[command arguments] objectAtIndex:1]);
     CDVPluginResult* pluginResult = nil;
     
     if([Appodeal canShowAd:nativeShowStyleForType([[[command arguments] objectAtIndex:0] intValue]) forPlacement:[[command arguments] objectAtIndex:0]])
@@ -456,6 +498,7 @@ int nativeShowStyleForType(int adTypes) {
 
 - (void) setCustomDoubleRule:(CDVInvokedUrlCommand*)command
 {
+    NSLog(@"AppodealCordova, setCustomDoubleRule");
     NSString *jsonString = [[command arguments] objectAtIndex:0];
     NSData *data = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
@@ -464,6 +507,7 @@ int nativeShowStyleForType(int adTypes) {
 
 - (void) setCustomIntegerRule:(CDVInvokedUrlCommand*)command
 {
+    NSLog(@"AppodealCordova, setCustomIntegerRule");
     NSString *jsonString = [[command arguments] objectAtIndex:0];
     NSData *data = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
@@ -472,6 +516,7 @@ int nativeShowStyleForType(int adTypes) {
 
 - (void) setCustomStringRule:(CDVInvokedUrlCommand*)command
 {
+    NSLog(@"AppodealCordova, setCustomStringRule");
     NSString *jsonString = [[command arguments] objectAtIndex:0];
     NSData *data = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
@@ -480,6 +525,7 @@ int nativeShowStyleForType(int adTypes) {
 
 - (void) setCustomBooleanRule:(CDVInvokedUrlCommand*)command
 {
+    NSLog(@"AppodealCordova, setCustomBooleanRule");
     NSString *jsonString = [[command arguments] objectAtIndex:0];
     NSData *data = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
@@ -488,26 +534,32 @@ int nativeShowStyleForType(int adTypes) {
 
 - (void) setSmartBanners:(CDVInvokedUrlCommand*)command
 {
+    NSLog(@"AppodealCordova, setSmartBanners to: %@", [[command arguments] objectAtIndex:0]);
     [Appodeal setSmartBannersEnabled:[[[command arguments] objectAtIndex:0] boolValue]];
 }
 
 - (void) setBannerBackground:(CDVInvokedUrlCommand*)command
 {
+    NSLog(@"AppodealCordova, setBannerBackground to: %@", [[command arguments] objectAtIndex:0]);
     [Appodeal setBannerBackgroundVisible:[[[command arguments] objectAtIndex:0] boolValue]];
 }
 
 - (void) setBannerAnimation:(CDVInvokedUrlCommand*)command
 {
+    NSLog(@"AppodealCordova, setBannerAnimation to: %@", [[command arguments] objectAtIndex:0]);
     [Appodeal setBannerAnimationEnabled:[[[command arguments] objectAtIndex:0] boolValue]];
 }
 
 - (void) setAge:(CDVInvokedUrlCommand*)command
 {
+    NSLog(@"AppodealCordova, setAge to: %@", [[command arguments] objectAtIndex:0]);
     [Appodeal setUserAge:[[[command arguments] objectAtIndex:0] integerValue]];
 }
 
 - (void) setGender:(CDVInvokedUrlCommand*)command
 {
+    NSLog(@"AppodealCordova, setGender to: %@", [[command arguments] objectAtIndex:0]);
+    
     NSString *AppodealUserGender = [[command arguments] objectAtIndex:0];
     
     if([AppodealUserGender isEqualToString:@"other"])
@@ -521,9 +573,11 @@ int nativeShowStyleForType(int adTypes) {
 //Banner overlap
 - (void) setBannerOverLap:(CDVInvokedUrlCommand*)command
 {
+    NSLog(@"AppodealCordova, setBannerOverLap to: %@", [[[command arguments] objectAtIndex:0] boolValue]);
+    
     if (![Appodeal isInitalized]) {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(statusBarDidChangeFrame:) name: UIApplicationDidChangeStatusBarFrameNotification object:nil];
-            bannerOverlap = [[[command arguments] objectAtIndex:0] boolValue];
+        bannerOverlap = [[[command arguments] objectAtIndex:0] boolValue];
         if (hasStatusBarPlugin) {
             bannerOverlap = false;
         }
@@ -531,6 +585,8 @@ int nativeShowStyleForType(int adTypes) {
 }
 
 - (void) returnNativeSize {
+    NSLog(@"AppodealCordova, returnNativeSize");
+    
     CGRect bounds = [self.viewController.view.window bounds];
     if (CGRectEqualToRect(bounds, CGRectZero)) {
         bounds = [[UIScreen mainScreen] bounds];
@@ -543,6 +599,8 @@ int nativeShowStyleForType(int adTypes) {
 }
 
 - (void) changeWebViewWithOverlappedBanner {
+    NSLog(@"AppodealCordova, changeWebViewWithOverlappedBanner");
+    
     CGRect bounds = [self.viewController.view.window bounds];
     if (CGRectEqualToRect(bounds, CGRectZero)) {
         bounds = [[UIScreen mainScreen] bounds];
@@ -571,11 +629,13 @@ int nativeShowStyleForType(int adTypes) {
 
 - (void) statusBarDidChangeFrame:(NSNotification *)note
 {
+    NSLog(@"AppodealCordova, statusBarDidChangeFrame");
     if (bannerOverlap && bannerIsShowing)
         [self changeWebViewWithOverlappedBanner];
 }
 
 - (void) setDelegateOnOverlap:(AppodealAdType) types {
+    NSLog(@"AppodealCordova, setDelegateOnOverlap");
     switch (types) {
         case AppodealAdTypeBanner:
             [Appodeal setBannerDelegate:self];
@@ -589,6 +649,7 @@ int nativeShowStyleForType(int adTypes) {
 }
 
 - (void)detectStatusBarPlugin {
+    NSLog(@"AppodealCordova, detectStatusBarPlugin");
     int numClasses;
     Class * classes = NULL;
     classes = NULL;
