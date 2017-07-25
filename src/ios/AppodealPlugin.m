@@ -230,7 +230,6 @@ int nativeShowStyleForType(int adTypes) {
 - (void)nonSkippableVideoDidLoadAd
 {
     NSLog(@"AppodealCordova, nonSkippableVideoDidLoadAd");
-    
     NSDictionary *vals = @{CALLBACK_EVENT: CALLBACK_LOADED};
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:vals];
     [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
@@ -320,6 +319,7 @@ int nativeShowStyleForType(int adTypes) {
         isIphone = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? false : true);
     }
     [Appodeal initializeWithApiKey:[[command arguments] objectAtIndex:0] types:nativeAdTypesForType ([[[command arguments] objectAtIndex:1] intValue])];
+    [Appodeal setLogLevel:APDLogLevelDebug];
 }
 
 - (void) isInitalized:(CDVInvokedUrlCommand*)command
