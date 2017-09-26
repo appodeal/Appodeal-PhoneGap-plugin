@@ -720,14 +720,14 @@ int nativeShowStyleForType(int adTypes) {
     NSDictionary *vals = @{CALLBACK_EVENT: CALLBACK_LOADED};
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:vals];
     [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:self.rewardedCallbackID];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:self.nonSkippbaleCallbackID];
 }
 
 - (void)nonSkippableVideoDidFailToLoadAd {
     NSDictionary *vals = @{CALLBACK_EVENT: CALLBACK_FAILED};
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:vals];
     [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:self.rewardedCallbackID];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:self.nonSkippbaleCallbackID];
 }
 
 - (void)nonSkippableVideoDidPresent {
@@ -736,14 +736,14 @@ int nativeShowStyleForType(int adTypes) {
     NSDictionary *vals = @{CALLBACK_EVENT: CALLBACK_SHOWN};
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:vals];
     [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:self.rewardedCallbackID];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:self.nonSkippbaleCallbackID];
 }
 
 - (void)nonSkippableVideoWillDismiss {
     NSDictionary *vals = @{CALLBACK_EVENT: CALLBACK_CLOSED, @"finished": [NSNumber numberWithBool:isNonSkippableFinished]};
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:vals];
     [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:self.rewardedCallbackID];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:self.nonSkippbaleCallbackID];
 }
 
 - (void)nonSkippableVideoDidFinish {
@@ -752,7 +752,7 @@ int nativeShowStyleForType(int adTypes) {
     NSDictionary *vals = @{CALLBACK_EVENT: CALLBACK_FINISHED};
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:vals];
     [pluginResult setKeepCallback:[NSNumber numberWithBool:YES]];
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:self.rewardedCallbackID];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:self.nonSkippbaleCallbackID];
 }
 
 @end
