@@ -7,9 +7,13 @@ Appodeal.INTERSTITIAL = 3;
 Appodeal.BANNER = 4;
 Appodeal.BANNER_BOTTOM = 8;
 Appodeal.BANNER_TOP = 16;
-Appodeal.BANNER_VIEW = 32;
 Appodeal.REWARDED_VIDEO = 128;
 Appodeal.NON_SKIPPABLE_VIDEO = 256;
+
+Appodeal.BANNER_X_SMART = 0;
+Appodeal.BANNER_X_CENTER = 1;
+Appodeal.BANNER_X_LEFT = 2;
+Appodeal.BANNER_X_RIGHT = 3;
 
 Appodeal.LogLevel = {
     NONE: 0,
@@ -23,7 +27,7 @@ Appodeal.Gender = {
     FEMALE: 2
 };
 
-Appodeal.pluginVersion = '3.0.1';
+Appodeal.pluginVersion = '3.0.4';
 
 Appodeal.initialize = function(appKey, adType) {
 	exec(null, null, "AppodealPlugin", "setPluginVersion", [Appodeal.pluginVersion]);
@@ -38,6 +42,10 @@ Appodeal.showWithPlacement = function(adType, placement, callback) {
     exec(callback, null, "AppodealPlugin", "showWithPlacement", [adType, placement]);
 };
 
+Appodeal.showBannerView = function(xAxis, yAxis, placement) {
+    exec(null, null, "AppodealPlugin", "showBannerView", [xAxis, yAxis, placement]);
+};
+
 Appodeal.isLoaded = function(adType, callback) {
     exec(callback, null, "AppodealPlugin", "isLoaded", [adType]);
 };
@@ -49,6 +57,10 @@ Appodeal.cache = function(adType) {
 Appodeal.hide = function(adType) {
     exec(null, null, "AppodealPlugin", "hide", [adType]);
 };
+
+Appodeal.destroy = function(adType) {
+	exec(null, null, "AppodealPlugin", "destroy", [adType]);
+}
 
 Appodeal.setAutoCache = function(adType, autoCache) {
     exec(null, null, "AppodealPlugin", "setAutoCache", [adType, autoCache]);
